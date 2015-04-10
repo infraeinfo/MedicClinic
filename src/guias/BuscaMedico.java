@@ -52,7 +52,7 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Nome Medico:");
 
-        jButton2.setText("B");
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
 
         jTextField1.setBackground(new java.awt.Color(204, 255, 255));
         jTextField1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N

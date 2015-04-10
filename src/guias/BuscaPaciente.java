@@ -49,7 +49,7 @@ public class BuscaPaciente extends javax.swing.JInternalFrame {
         jTextField1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(0, 0, 153));
 
-        jButton1.setText("B");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
