@@ -116,7 +116,7 @@ public class CadPaciente extends javax.swing.JInternalFrame {
         jTextField7.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jTextField7.setForeground(new java.awt.Color(0, 0, 204));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "A+", "A-", "B+", "B-", "O-", "O+", "AB" }));
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "Casado(A)", "Solteiro(A)", "Divorciado(A)", "Viuvo(A)", "União Estavél" }));
 

@@ -53,7 +53,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         setTitle("Cadastro de Consultas Médicas\n");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +86,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         jTextField3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jTextField3.setForeground(new java.awt.Color(0, 0, 153));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "4 - Grave", "5 - Padrão", "6 - Urgente" }));
 
         jTextArea1.setBackground(new java.awt.Color(204, 255, 255));
         jTextArea1.setColumns(20);
