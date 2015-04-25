@@ -5,6 +5,13 @@
  */
 package guias;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.Timer;
+
 /**
  *
  * @author jhonatan
@@ -19,6 +26,9 @@ public class Principal extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
     }
 
+    public static String cod;
+    public static String tipo;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,23 +42,26 @@ public class Principal extends javax.swing.JFrame {
         centro = new javax.swing.JDesktopPane();
         jButton4 = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
+        jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
-        jButton6 = new javax.swing.JButton();
         jToolBar2 = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lbOperador = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        lbTipoFuncao = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JToolBar.Separator();
+        jLabel3 = new javax.swing.JLabel();
+        lbData = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lbHora = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -75,10 +88,16 @@ public class Principal extends javax.swing.JFrame {
                 formPropertyChange(evt);
             }
         });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411767931_519563-059_CircledOff-32.png"))); // NOI18N
+        jButton4.setToolTipText("Sair do sistema com opção de BKP.");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -90,7 +109,7 @@ public class Principal extends javax.swing.JFrame {
         centroLayout.setHorizontalGroup(
             centroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centroLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(679, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );
@@ -108,20 +127,9 @@ public class Principal extends javax.swing.JFrame {
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411840672_icon-clipboard-64.png"))); // NOI18N
-        jButton1.setText("Consulta");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton1);
-
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839971_icon-person-stalker-64.png"))); // NOI18N
         jButton2.setText("Pacientes");
+        jButton2.setToolTipText("Cadastrar Pacientes");
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -133,8 +141,36 @@ public class Principal extends javax.swing.JFrame {
         jToolBar1.add(jButton2);
         jToolBar1.add(jSeparator3);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411840672_icon-clipboard-64.png"))); // NOI18N
+        jButton1.setText("Consulta");
+        jButton1.setToolTipText("Cadastrar Consultas de Clientes/Medicos");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton1);
+
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838138_icon-ios7-people-outline-64.png"))); // NOI18N
+        jButton6.setText("Status");
+        jButton6.setToolTipText("Mostra a Fila de Atendimento");
+        jButton6.setFocusable(false);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton6);
+        jToolBar1.add(jSeparator5);
+
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838928_icon-ios7-contact-64.png"))); // NOI18N
         jButton3.setText("Médicos");
+        jButton3.setToolTipText("Cadastrar Novo Médico");
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -144,10 +180,10 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButton3);
-        jToolBar1.add(jSeparator5);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838657_icon-thumbsup-64.png"))); // NOI18N
         jButton5.setText("Láudos");
+        jButton5.setToolTipText("Área destinada a Médicos para Fazer seus Laudos.");
         jButton5.setFocusable(false);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -159,43 +195,51 @@ public class Principal extends javax.swing.JFrame {
         jToolBar1.add(jButton5);
         jToolBar1.add(jSeparator6);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838138_icon-ios7-people-outline-64.png"))); // NOI18N
-        jButton6.setText("Status");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton6);
-
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
+        jLabel1.setForeground(new java.awt.Color(0, 153, 153));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411768369_519647-150_Glasses-16.png"))); // NOI18N
         jLabel1.setText("Operador:");
         jToolBar2.add(jLabel1);
 
-        jLabel2.setText("Usuario do Sistema");
-        jToolBar2.add(jLabel2);
+        lbOperador.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbOperador.setForeground(new java.awt.Color(255, 51, 102));
+        lbOperador.setText("Usuario do Sistema");
+        jToolBar2.add(lbOperador);
         jToolBar2.add(jSeparator1);
 
+        jLabel4.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel4.setText("Função:");
+        jToolBar2.add(jLabel4);
+
+        lbTipoFuncao.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbTipoFuncao.setForeground(new java.awt.Color(255, 51, 102));
+        lbTipoFuncao.setText("Não Definida");
+        jToolBar2.add(lbTipoFuncao);
+        jToolBar2.add(jSeparator8);
+
+        jLabel3.setForeground(new java.awt.Color(0, 153, 153));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838266_icon-ios7-calendar-outline-16.png"))); // NOI18N
         jLabel3.setText("Data Local:");
         jToolBar2.add(jLabel3);
 
-        jLabel4.setText("01/01/2015");
-        jToolBar2.add(jLabel4);
+        lbData.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbData.setForeground(new java.awt.Color(255, 51, 102));
+        lbData.setText("          ");
+        jToolBar2.add(lbData);
         jToolBar2.add(jSeparator2);
 
+        jLabel5.setForeground(new java.awt.Color(0, 153, 153));
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838243_icon-ios7-stopwatch-outline-16.png"))); // NOI18N
         jLabel5.setText("Horario Local:");
         jToolBar2.add(jLabel5);
 
-        jLabel6.setText("00:00:00");
-        jToolBar2.add(jLabel6);
+        lbHora.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lbHora.setForeground(new java.awt.Color(255, 51, 102));
+        lbHora.setText("         ");
+        lbHora.setToolTipText("");
+        jToolBar2.add(lbHora);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -219,7 +263,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(centro)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -358,6 +402,10 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         funcoes.funcao.cad_consulta();
+        CadConsulta.lbNomeOperador.setText(Principal.lbOperador.getText());
+        CadConsulta.lbCodOperador.setText(cod);
+        CadConsulta.lbData.setText(lbData.getText());
+        CadConsulta.lbHora.setText(lbHora.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -393,7 +441,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-      funcoes.funcao.status();
+        funcoes.funcao.status();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
@@ -401,7 +449,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void formPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_formPropertyChange
-       funcoes.funcao.status();
+        funcoes.funcao.status();
     }//GEN-LAST:event_formPropertyChange
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -409,7 +457,11 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-       funcoes.funcao.cad_consulta();
+        funcoes.funcao.cad_consulta();
+        CadConsulta.lbNomeOperador.setText(Principal.lbOperador.getText());
+        CadConsulta.lbCodOperador.setText(cod);
+        CadConsulta.lbData.setText(lbData.getText());
+        CadConsulta.lbHora.setText(lbHora.getText());
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -417,8 +469,24 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        DataHora();
+    }//GEN-LAST:event_formWindowOpened
+
+    public void DataHora() {
+        //Mostra a data Local
+        Date dataSistema = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        lbData.setText(formato.format(dataSistema));
+
+        //Mostra a Hora local
+//        Timer timer = new Timer(1000, new Autenticacao.hora());
+        Timer timer = new Timer(1000, new hora());
+        timer.start();
+    }
 
     /**
      * @param args the command line arguments
@@ -432,20 +500,14 @@ public class Principal extends javax.swing.JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
+//                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -465,11 +527,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -494,7 +554,22 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    public static javax.swing.JLabel lbData;
+    private javax.swing.JLabel lbHora;
+    public static javax.swing.JLabel lbOperador;
+    public static javax.swing.JLabel lbTipoFuncao;
     // End of variables declaration//GEN-END:variables
+
+    class hora implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Calendar now = Calendar.getInstance();
+            lbHora.setText(String.format("%1$tH:%1$tM:%1$tS", now));
+        }
+    }
+
 }

@@ -5,6 +5,14 @@
  */
 package guias;
 
+import conexão.ConectaBanco;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jhonatan
@@ -16,7 +24,14 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
      */
     public BuscaMedico() {
         initComponents();
+        dtm = (DefaultTableModel) tabelaBuscaMedico.getModel();
     }
+    //public static String nomeMedicoConsulta;    
+    
+    
+    //Sempre necessario para manipular tabelas com registros criar uma default table nome
+    // não esquecer de inicar as tabelas no construtro da classe.
+    public DefaultTableModel dtm;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,17 +46,17 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscaMedico = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        tabelaBuscaMedico = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Busca de Medicos (Para Consultar Pacientes)");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(0, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -53,42 +68,72 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
         jLabel1.setText("Nome Medico:");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jTextField1.setBackground(new java.awt.Color(204, 255, 255));
-        jTextField1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 153));
+        txtBuscaMedico.setBackground(new java.awt.Color(204, 255, 255));
+        txtBuscaMedico.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtBuscaMedico.setForeground(new java.awt.Color(0, 0, 153));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaBuscaMedico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Cod", "CRM", "Nome", "ESPECIALIDADE", "Atendimento"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        jButton3.setText("Inserir Seleciondo");
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabelaBuscaMedico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaBuscaMedicoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelaBuscaMedico);
+        if (tabelaBuscaMedico.getColumnModel().getColumnCount() > 0) {
+            tabelaBuscaMedico.getColumnModel().getColumn(0).setResizable(false);
+            tabelaBuscaMedico.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tabelaBuscaMedico.getColumnModel().getColumn(1).setResizable(false);
+            tabelaBuscaMedico.getColumnModel().getColumn(1).setPreferredWidth(5);
+            tabelaBuscaMedico.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabelaBuscaMedico.getColumnModel().getColumn(3).setPreferredWidth(100);
+        }
+
+        jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("DIGITE O NOME DO MEDICO OU CLIQUE NO BOTAO LUPA");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(252, 252, 252))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscaMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -102,13 +147,13 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscaMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -132,18 +177,47 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+            String sql = "select * from medico Where especialidade LIKE ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtBuscaMedico.getText() + "%");
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+                Object Linha[] = {rs.getString("cod"), rs.getString("crm"),
+                    rs.getString("nome"), rs.getString("especialidade"), rs.getString("atendimento"), false, false};
+                dtm.addRow(Linha);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tabelaBuscaMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaBuscaMedicoMouseClicked
+        int linha_selecionada = tabelaBuscaMedico.getSelectedRow();
+        CadConsulta.codMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 0).toString());
+        CadConsulta.txtNomeMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 2).toString());
+        this.dispose();
+    }//GEN-LAST:event_tabelaBuscaMedicoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tabelaBuscaMedico;
+    private javax.swing.JTextField txtBuscaMedico;
     // End of variables declaration//GEN-END:variables
 }

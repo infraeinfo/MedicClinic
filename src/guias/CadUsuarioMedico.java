@@ -1,10 +1,13 @@
+package guias;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package guias;
 
+
+import guias.*;
 import conexão.ConectaBanco;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -12,22 +15,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author jhonatan
  */
-public class CadUsuario extends javax.swing.JInternalFrame {
+public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form CadUsuario
      */
-    public CadUsuario() {
+    public CadUsuarioMedico() {
         initComponents();
     }
+    public static String nomeMedico;
+     public static String CRM;
+      public static String celular;
     
-    public void CadastrarUsuario(){
+    
+    
+    
+    public void CadastrarUsuarioMedico(){
          if(txtSenha.getText().equals(txtSenha2.getText()))
         {      
         Connection con;
@@ -35,15 +45,27 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         con=null;    
         con = ConectaBanco.conecta("bdclinica");
         String query = "INSERT INTO login (nome,telefone,cpf,usuario,senha,tipo) values (?,?,?,?,?,?)";
-        PreparedStatement pst = con.prepareStatement(query);
+        PreparedStatement pst = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
         pst.setString(1,txtNome.getText());
         pst.setString(2,txtTelefone.getText().trim());
-        pst.setString(3,txtCPF.getText());
+        pst.setString(3,txtCrm.getText());
         pst.setString(4,txtUsuario.getText().trim());
         pst.setString(5,txtSenha.getText());
         pst.setString(6,cbSetor.getSelectedItem().toString());
-//        pst.setString(6,grupo.getSelection().getActionCommand());
+//        pst.setString(6,grupo.getSelection().getActionCommand());  
+        
         pst.execute();
+        //Metodo para recuperar o id de AutoIncremento de PK_PKF
+            ResultSet rs = pst.getGeneratedKeys();
+            rs.next();
+            //Metodo para Setar o campo recuperado em algum lugar da aplicação
+            String cod = rs.getString(1);
+            txtCodigoUsuario.setText(cod);
+            CadMedicos.codLogin=txtCodigoUsuario.getText();
+            CadMedicos.CodLogin.setText(txtCodigoUsuario.getText());
+        
+        
+        
        JOptionPane.showMessageDialog(null,"Cadastrado com sucesso!");
         limpar();
       }catch(SQLException e)
@@ -61,7 +83,7 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         }
     }
     public void  limpar(){
-        txtCPF.setText("");
+        txtCrm.setText("");
         txtNome.setText("");
         txtSenha.setText("");
         txtSenha2.setText("");
@@ -94,17 +116,35 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         txtTelefone = new javax.swing.JTextField();
         txtUsuario = new javax.swing.JTextField();
         cbSetor = new javax.swing.JComboBox();
-        txtCPF = new javax.swing.JTextField();
+        txtCrm = new javax.swing.JTextField();
         txtSenha = new javax.swing.JPasswordField();
         txtSenha2 = new javax.swing.JPasswordField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         lbAlerta = new javax.swing.JLabel();
+        txtCodigoUsuario = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Cadastro de Usuarios ao Sistema");
+        setTitle("Cadastro de Usuarios Medicos ao sistema\n");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
@@ -118,9 +158,9 @@ public class CadUsuario extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Nome Completo:");
 
-        jLabel2.setText("telefone:");
+        jLabel2.setText("Celular:");
 
-        jLabel3.setText("CPF:");
+        jLabel3.setText("CRM:");
 
         jLabel4.setText("Setor:");
 
@@ -130,10 +170,12 @@ public class CadUsuario extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Repita Senha:");
 
+        txtNome.setEditable(false);
         txtNome.setBackground(new java.awt.Color(204, 255, 255));
         txtNome.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtNome.setForeground(new java.awt.Color(0, 0, 204));
 
+        txtTelefone.setEditable(false);
         txtTelefone.setBackground(new java.awt.Color(204, 255, 255));
         txtTelefone.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtTelefone.setForeground(new java.awt.Color(0, 0, 204));
@@ -147,11 +189,13 @@ public class CadUsuario extends javax.swing.JInternalFrame {
             }
         });
 
-        cbSetor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "Secretaria", "Recepção", "Administrativo", "Desenvolvedor" }));
+        cbSetor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Medico" }));
+        cbSetor.setEnabled(false);
 
-        txtCPF.setBackground(new java.awt.Color(204, 255, 255));
-        txtCPF.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtCPF.setForeground(new java.awt.Color(0, 0, 204));
+        txtCrm.setEditable(false);
+        txtCrm.setBackground(new java.awt.Color(204, 255, 255));
+        txtCrm.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtCrm.setForeground(new java.awt.Color(0, 0, 204));
 
         txtSenha.setBackground(new java.awt.Color(204, 255, 255));
         txtSenha.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -162,6 +206,7 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         txtSenha2.setForeground(new java.awt.Color(0, 0, 204));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -169,6 +214,7 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
+        jButton3.setEnabled(false);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +222,12 @@ public class CadUsuario extends javax.swing.JInternalFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+
+        txtCodigoUsuario.setEditable(false);
+        txtCodigoUsuario.setBackground(new java.awt.Color(204, 255, 255));
+        txtCodigoUsuario.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        txtCodigoUsuario.setForeground(new java.awt.Color(0, 0, 153));
+        txtCodigoUsuario.setText("cod.usuario");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -212,12 +264,15 @@ public class CadUsuario extends javax.swing.JInternalFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(0, 0, 0)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cbSetor, javax.swing.GroupLayout.Alignment.LEADING, 0, 147, Short.MAX_VALUE)
-                                .addComponent(txtCPF, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtTelefone, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(cbSetor, javax.swing.GroupLayout.Alignment.LEADING, 0, 147, Short.MAX_VALUE)
+                                    .addComponent(txtCrm, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtTelefone, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -240,11 +295,12 @@ public class CadUsuario extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCrm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(cbSetor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbSetor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -301,12 +357,49 @@ public class CadUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtUsuarioFocusLost
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       CadastrarUsuario();
+       CadastrarUsuarioMedico();
+       this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        limpar();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+       
+        ///////////////////
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "SELECT *from consulta where nome LIKE ?";
+            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from paciente p , consulta c where c.paciente_cod=p.cod and p.nome LIKE ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText());
+
+            ResultSet rs = pst.executeQuery();
+           while ( rs.next()){
+            DetalhesConsultaPaciente.AreaSintomasStatus.setText(rs.getString("sintomas"));
+            DetalhesConsultaPaciente.txtHoraAtendimentoStatus.setText(rs.getString("horario"));
+//            String cod = rs.getString(1);
+//            txtCodEnde.setText(cod);
+            //String sintomas = rs.getString(6);
+//            DetalhesConsultaPaciente.AreaSintomasStatus.setText("sintomas");
+           // System.out.println("Nome: "+nome);
+            //System.out.println("Sintomas"+sintomas);
+            
+//            while (rs.next()) {
+//                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+//                Object Linha[] = {rs.getString("cod"), rs.getString("crm"),
+//                    rs.getString("nome"), rs.getString("especialidade"), rs.getString("atendimento"), false, false};
+//                dtm.addRow(Linha);
+//            }
+        }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+        
+    }//GEN-LAST:event_formInternalFrameOpened
 
     public void verificaUsurio() throws HeadlessException {
         Connection con;
@@ -357,11 +450,12 @@ public class CadUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbAlerta;
-    private javax.swing.JTextField txtCPF;
-    private javax.swing.JTextField txtNome;
+    public static javax.swing.JTextField txtCodigoUsuario;
+    public static javax.swing.JTextField txtCrm;
+    public static javax.swing.JTextField txtNome;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JPasswordField txtSenha2;
-    private javax.swing.JTextField txtTelefone;
-    private javax.swing.JTextField txtUsuario;
+    public static javax.swing.JTextField txtTelefone;
+    public static javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

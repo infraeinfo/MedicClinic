@@ -15,6 +15,10 @@ import guias.Sobre;
 import guias.Status;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import guias.CadPacientes.*;
+import static guias.CadPacientes.txtNome;
+import guias.CadUsuarioMedico;
+import guias.DetalhesConsultaPaciente;
 
 /**
  *
@@ -34,6 +38,8 @@ public class funcao {
     public static JInternalFrame log_sistema;
     public static JInternalFrame status;
     public static JInternalFrame sobre;
+    public static JInternalFrame cad_usario_medico;
+    public static JInternalFrame detalhesBuscaPaciente;
     public static JFrame pre_laudos;
 
     //Abre o sistema na Tela Principal depois de Clicado no botão acessar
@@ -60,7 +66,7 @@ public class funcao {
     //cadastra paciente
     public static void cad_paciente() {
         if (cad_pacientes == null || cad_pacientes.isVisible() == false) {
-            cad_pacientes = new guias.CadPaciente();
+            cad_pacientes = new guias.CadPacientes();
             guias.Principal.centro.add(cad_pacientes);
             cad_pacientes.setVisible(true);
         } else {
@@ -115,7 +121,7 @@ public class funcao {
     //Funcao de Cadas de Endereços para Paciente (Cadastro Pacientes)
     public static void cad_endereco() {
         if (cad_endereco == null || cad_endereco.isVisible() == false) {
-            cad_endereco = new CadEndereco();
+            cad_endereco = new CadEndereco();//(txtNome.getText());
             guias.Principal.centro.add(cad_endereco);
             cad_endereco.setVisible(true);
         } else {
@@ -176,5 +182,26 @@ public class funcao {
             pre_laudos.toFront();
         }
     }
+    
+    public static void cad_usario_medico(){
+        if(cad_usario_medico == null|| cad_usario_medico.isVisible()==false){
+            cad_usario_medico = new CadUsuarioMedico();
+            guias.Principal.centro.add(cad_usario_medico);
+            cad_usario_medico.setVisible(true);
+        }else{
+            cad_usario_medico.toFront();
+        }
+    }
+    
+    public static void detalhes_paciente_Status(){
+        if(detalhesBuscaPaciente==null || detalhesBuscaPaciente.isVisible()==false){
+            detalhesBuscaPaciente= new DetalhesConsultaPaciente();
+            guias.Principal.centro.add(detalhesBuscaPaciente);
+            detalhesBuscaPaciente.setVisible(true);
+        }else{
+            detalhesBuscaPaciente.toFront();
+        }
+    }
+    
 
 }//Fecha Funcão

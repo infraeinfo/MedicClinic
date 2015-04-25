@@ -5,7 +5,14 @@
  */
 package guias;
 
-import funcoes.funcao;
+import conexão.ConectaBanco;
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,7 +25,11 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
      */
     public LaudosMedicos() {
         initComponents();
+        dtm = (DefaultTableModel) tabPacienteLaudos.getModel();
     }
+    //Sempre necessario para manipular tabelas com registros criar uma default table nome
+    // não esquecer de inicar as tabelas no construtro da classe.
+    public DefaultTableModel dtm;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,7 +43,7 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jTextField3 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbPreLaudos = new javax.swing.JComboBox();
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -42,21 +53,38 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txtAreaLaudos = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        btnBuscaPacienteLaudo = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabPacienteLaudos = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtAreaSintomasLaudo = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNomeMedicoLaudos = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setTitle(".::Laudos Medicos::.");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
@@ -65,7 +93,12 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         jTextField3.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jTextField3.setForeground(new java.awt.Color(0, 0, 153));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "PL-01 -Liberado", "PL-02 -Liberado com Receita Medica", "PL -03 -Interndo", " " }));
+        cbPreLaudos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "Alta", "Tratamento médico", "Internado" }));
+        cbPreLaudos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPreLaudosActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
 
@@ -88,48 +121,70 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Laudo Médico:");
 
-        jTextArea2.setBackground(new java.awt.Color(204, 255, 255));
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        txtAreaLaudos.setBackground(new java.awt.Color(204, 255, 255));
+        txtAreaLaudos.setColumns(20);
+        txtAreaLaudos.setRows(5);
+        jScrollPane2.setViewportView(txtAreaLaudos);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pacientes Para Serem Examinados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(0, 0, 153))); // NOI18N
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscaPacienteLaudo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
+        btnBuscaPacienteLaudo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnBuscaPacienteLaudoActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabPacienteLaudos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Paciente", "Horario", "Triagem"
             }
-        ));
-        jScrollPane3.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
-        jTextArea1.setBackground(new java.awt.Color(204, 255, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jTextArea1.setForeground(new java.awt.Color(0, 0, 153));
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tabPacienteLaudos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabPacienteLaudosMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tabPacienteLaudos);
+        if (tabPacienteLaudos.getColumnModel().getColumnCount() > 0) {
+            tabPacienteLaudos.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tabPacienteLaudos.getColumnModel().getColumn(1).setResizable(false);
+            tabPacienteLaudos.getColumnModel().getColumn(1).setPreferredWidth(20);
+            tabPacienteLaudos.getColumnModel().getColumn(2).setResizable(false);
+            tabPacienteLaudos.getColumnModel().getColumn(2).setPreferredWidth(30);
+        }
+
+        txtAreaSintomasLaudo.setBackground(new java.awt.Color(204, 255, 255));
+        txtAreaSintomasLaudo.setColumns(20);
+        txtAreaSintomasLaudo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtAreaSintomasLaudo.setForeground(new java.awt.Color(0, 0, 153));
+        txtAreaSintomasLaudo.setRows(5);
+        jScrollPane1.setViewportView(txtAreaSintomasLaudo);
 
         jLabel1.setText("Médico/CRM:");
 
         jLabel6.setText("Sintomas:");
 
-        jTextField1.setBackground(new java.awt.Color(204, 255, 255));
-        jTextField1.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 153));
+        txtNomeMedicoLaudos.setBackground(new java.awt.Color(204, 255, 255));
+        txtNomeMedicoLaudos.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtNomeMedicoLaudos.setForeground(new java.awt.Color(0, 0, 153));
+        txtNomeMedicoLaudos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeMedicoLaudosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -137,31 +192,31 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNomeMedicoLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBuscaPacienteLaudo)))
+                        .addContainerGap(108, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(9, 9, 9))
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtNomeMedicoLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscaPacienteLaudo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -184,19 +239,29 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbPreLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton6))))
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane2)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -204,17 +269,8 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButton2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton1))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton6))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton1))))
+                .addContainerGap())
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
@@ -235,7 +291,7 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbPreLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
@@ -275,23 +331,110 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        funcoes.funcao.busca_paciente();
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void btnBuscaPacienteLaudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscaPacienteLaudoActionPerformed
+        //funcoes.funcao.busca_paciente();
+
+        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "SELECT *from consulta where nome LIKE ?";
+            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome from paciente p , consulta c, medico m where  c.medico_cod = m.cod and c.paciente_cod = p.cod and m.nome like ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtNomeMedicoLaudos.getText() + "%");
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Object Linha[] = {rs.getString("p.Nome"), //false, false};
+                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                dtm.addRow(Linha);
+
+//                int linha_selecionada = tabPacienteLaudos.getSelectedRow();
+//                txtAreaSintomasLaudo.setText(rs.getString("c.sintomas"));
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+
+
+    }//GEN-LAST:event_btnBuscaPacienteLaudoActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         funcoes.funcao.preLaudos();
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void cbPreLaudosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPreLaudosActionPerformed
+
+        switch (cbPreLaudos.getSelectedIndex()) {
+            case 0:
+
+                break;
+            case 1:
+                txtAreaLaudos.setText("Alta –Paciente\n foi liberado da clínica após a consulta,não havendo necessidade\n"
+                        + "de retornar na clínica.\n \nOBS MEDICAS:" + "");
+                break;
+            case 2:
+                txtAreaLaudos.setText("Tratamento médico –\nPaciente foi liberado da clínica após a consulta havendo a\n"
+                        + "necessidade de retornar na clínica.\n \nOBS MEDICAS:" + "");
+                break;
+            case 3:
+                txtAreaLaudos.setText("Internado –\n Paciente não pode sair da clínica pois demanda um tratamento grave.\n \nOBS MEDICAS:" + "");
+                break;
+        }
+
+    }//GEN-LAST:event_cbPreLaudosActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        dtm.setRowCount(0);
+        ListaTabPalacienteLaudo();
+
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void tabPacienteLaudosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPacienteLaudosMouseClicked
+//        ListaTabPalacienteLaudo();
+    }//GEN-LAST:event_tabPacienteLaudosMouseClicked
+
+    public void ListaTabPalacienteLaudo() throws HeadlessException {
+        //        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome from paciente p , consulta c, medico m where  c.medico_cod = m.cod and c.paciente_cod = p.cod and m.nome like ? ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbOperador.getText() + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Object Linha[] = {rs.getString("p.Nome"), //false, false};
+                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                dtm.addRow(Linha);
+//                txtAreaSintomasLaudo.setText(rs.getString("c.sintomas"));
+//                int lin_selec = tabPacienteLaudos.getSelectedRow();
+//                int sintomas = Integer.parseInt(tabPacienteLaudos.getValueAt(lin_selec, 3).toString());
+//
+                
+                
+                
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+    }
+
+    private void txtNomeMedicoLaudosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeMedicoLaudosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeMedicoLaudosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscaPacienteLaudo;
+    private javax.swing.JComboBox cbPreLaudos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JComboBox jComboBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -304,10 +447,10 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTable tabPacienteLaudos;
+    private javax.swing.JTextArea txtAreaLaudos;
+    private javax.swing.JTextArea txtAreaSintomasLaudo;
+    public static javax.swing.JTextField txtNomeMedicoLaudos;
     // End of variables declaration//GEN-END:variables
 }

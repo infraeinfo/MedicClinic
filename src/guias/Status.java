@@ -5,6 +5,18 @@
  */
 package guias;
 
+import conexão.ConectaBanco;
+import static guias.DetalhesConsultaPaciente.AreaSintomasStatus;
+import static guias.DetalhesConsultaPaciente.dataConsulta;
+import static guias.DetalhesConsultaPaciente.txtHoraAtendimentoStatus;
+import static guias.Principal.lbOperador;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Jhonatan
@@ -16,7 +28,11 @@ public class Status extends javax.swing.JInternalFrame {
      */
     public Status() {
         initComponents();
+        dtm = (DefaultTableModel) tabelaBuscaStatus.getModel();
     }
+    //Sempre necessario para manipular tabelas com registros criar uma default table nome
+    // não esquecer de inicar as tabelas no construtro da classe.
+    public DefaultTableModel dtm;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,36 +45,76 @@ public class Status extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscaStatus = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaBuscaStatus = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnStatusLaudoPacientes = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+
+        setClosable(true);
+        setIconifiable(true);
+        setTitle("Statu   - Fila de Agendameto");
+        setToolTipText("");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(0, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
         jLabel1.setText("Pacientes:");
 
-        jTextField1.setBackground(new java.awt.Color(204, 255, 255));
-        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 153));
+        txtBuscaStatus.setBackground(new java.awt.Color(204, 255, 255));
+        txtBuscaStatus.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        txtBuscaStatus.setForeground(new java.awt.Color(0, 0, 153));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaBuscaStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "PACIENTES", "MEDICOS", "HORARIO", "TRIAGEM"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabelaBuscaStatus);
+        if (tabelaBuscaStatus.getColumnModel().getColumnCount() > 0) {
+            tabelaBuscaStatus.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tabelaBuscaStatus.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tabelaBuscaStatus.getColumnModel().getColumn(2).setPreferredWidth(10);
+            tabelaBuscaStatus.getColumnModel().getColumn(3).setResizable(false);
+            tabelaBuscaStatus.getColumnModel().getColumn(3).setPreferredWidth(10);
+        }
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -67,10 +123,17 @@ public class Status extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton3.setText("LaudarPaciente");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnStatusLaudoPacientes.setText("LaudarPaciente");
+        btnStatusLaudoPacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnStatusLaudoPacientesActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Detalhes Paciente");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -87,7 +150,7 @@ public class Status extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1)))
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -95,7 +158,9 @@ public class Status extends javax.swing.JInternalFrame {
                         .addGap(256, 256, 256)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnStatusLaudoPacientes)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -104,14 +169,15 @@ public class Status extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnStatusLaudoPacientes)
+                    .addComponent(jButton4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -135,23 +201,119 @@ public class Status extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      funcoes.funcao.laudo_medico();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnStatusLaudoPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatusLaudoPacientesActionPerformed
+        funcoes.funcao.laudo_medico();
+        LaudosMedicos.txtNomeMedicoLaudos.setText(Principal.lbOperador.getText());
+    }//GEN-LAST:event_btnStatusLaudoPacientesActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "select p.Nome, m.nome from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?";
+//            String sql = "SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod=medico.cod LIKE ?";
+//            String sql ="SELECT * FROM paciente INNER JOIN consulta ON consulta.paciente_cod=paciente.cod"; //"SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod = medico.cod LIKE ?";
+            String sql = "select p.Nome, m.nome, c.horario, c.tipo_consulta from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?  ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtBuscaStatus.getText() + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+                Object Linha[] = {rs.getString("p.Nome"), rs.getString("m.nome"), //false, false};
+                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                dtm.addRow(Linha);
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String nome, cod;
+        funcoes.funcao.detalhes_paciente_Status();
+        int linha_selecionada = tabelaBuscaStatus.getSelectedRow();
+        DetalhesConsultaPaciente.txtNomePacienteStatus.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString());
+        nome = tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString();
+
+//        ///////////////////
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "SELECT *from consulta where nome LIKE ?";
+            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from paciente p , consulta c where c.paciente_cod=p.cod and p.nome LIKE ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText() + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                AreaSintomasStatus.setText(rs.getString("c.sintomas"));
+                txtHoraAtendimentoStatus.setText(rs.getString("c.horario"));
+                dataConsulta.setDateFormatString(rs.getString("c.data_consulta"));
+//            String cod = rs.getString(1);
+//            txtCodEnde.setText(cod);
+                //String sintomas = rs.getString(6);
+//            DetalhesConsultaPaciente.AreaSintomasStatus.setText("sintomas");
+                // System.out.println("Nome: "+nome);
+                //System.out.println("Sintomas"+sintomas);
+
+//            while (rs.next()) {
+//                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+//                Object Linha[] = {rs.getString("cod"), rs.getString("crm"),
+//                    rs.getString("nome"), rs.getString("especialidade"), rs.getString("atendimento"), false, false};
+//                dtm.addRow(Linha);
+//            }
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+        
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "select p.Nome, m.nome from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?";
+//            String sql = "SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod=medico.cod LIKE ?";
+//            String sql ="SELECT * FROM paciente INNER JOIN consulta ON consulta.paciente_cod=paciente.cod"; //"SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod = medico.cod LIKE ?";
+            String sql = "select p.Nome, m.nome, c.horario, c.tipo_consulta from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?  ";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtBuscaStatus.getText() + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+                Object Linha[] = {rs.getString("p.Nome"), rs.getString("m.nome"), //false, false};
+                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                dtm.addRow(Linha);
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnStatusLaudoPacientes;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tabelaBuscaStatus;
+    private javax.swing.JTextField txtBuscaStatus;
     // End of variables declaration//GEN-END:variables
 }

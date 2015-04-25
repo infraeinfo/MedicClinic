@@ -6,7 +6,6 @@
 package guias;
 
 import conexão.ConectaBanco;
-import static guias.CadEndereco.txtBuscaCep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ import javax.swing.JOptionPane;
  *
  * @author jhonatan
  */
-public class CadConsulta extends javax.swing.JInternalFrame {
+public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
 
     Connection con;
     PreparedStatement pst;
@@ -26,7 +25,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
     /**
      * Creates new form cadVendas
      */
-    public CadConsulta() {
+    public DetalhesConsultaPaciente() {
         initComponents();
     }
     public static String codConsulta;
@@ -38,13 +37,13 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                 + "values (?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);//Statement.RETURN_GENERATED_KEYS);
-            pst.setString(1, codMedicoConsulta.getText());
-            pst.setString(2, codPacienteConuslta.getText());
+//            pst.setString(1, codMedicoConsulta.getText());
+//            pst.setString(2, codPacienteConuslta.getText());
             pst.setString(3, lbCodOperador.getText());
             pst.setString(4, dataConsulta.getDate().toString());
-            pst.setString(5, txtHoraAtendimento.getText());//getSelectedItem().toString());
+            pst.setString(5, txtHoraAtendimentoStatus.getText());//getSelectedItem().toString());
             pst.setString(6, cbTipoConuslta.getSelectedItem().toString());
-            pst.setString(7, AreaSintomas.getText());
+            pst.setString(7, AreaSintomasStatus.getText());
 
             pst.execute();
             //Metodo para recuperar o id de AutoIncremento de PK_PKF
@@ -66,16 +65,16 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         }
     }
 
-    public void LimparCampos(){
-        txtNomePacienteConsulta.setText("");
-        txtNomeMedicoConsulta.setText("");
-        txtHoraAtendimento.setText("");
-        AreaSintomas.setText("");
+    public void LimparCampos() {
+        txtNomePacienteStatus.setText("");
+//        txtNomeMedicoConsulta.setText("");
+        txtHoraAtendimentoStatus.setText("");
+        AreaSintomasStatus.setText("");
         dataConsulta.setDate(null);
         cbTipoConuslta.setSelectedIndex(0);
-        txtNomePacienteConsulta.requestFocus();
+        txtNomePacienteStatus.requestFocus();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,25 +87,17 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtNomePacienteConsulta = new javax.swing.JTextField();
-        txtNomeMedicoConsulta = new javax.swing.JTextField();
-        txtHoraAtendimento = new javax.swing.JTextField();
+        txtNomePacienteStatus = new javax.swing.JTextField();
+        txtHoraAtendimentoStatus = new javax.swing.JTextField();
         cbTipoConuslta = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        AreaSintomas = new javax.swing.JTextArea();
+        AreaSintomasStatus = new javax.swing.JTextArea();
         dataConsulta = new com.toedter.calendar.JDateChooser();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        codPacienteConuslta = new javax.swing.JLabel();
-        codMedicoConsulta = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         lbNomeOperador = new javax.swing.JLabel();
@@ -120,6 +111,23 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Cadastro de Consultas Médicas\n");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
@@ -134,9 +142,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel1.setText("Nome Paciente:");
 
-        jLabel2.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jLabel2.setText("Medico:");
-
         jLabel3.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel3.setText("Data da Consulta:");
 
@@ -149,42 +154,34 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel6.setText("Sintomas:");
 
-        txtNomePacienteConsulta.setBackground(new java.awt.Color(204, 255, 255));
-        txtNomePacienteConsulta.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtNomePacienteConsulta.setForeground(new java.awt.Color(0, 0, 153));
+        txtNomePacienteStatus.setBackground(new java.awt.Color(204, 255, 255));
+        txtNomePacienteStatus.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtNomePacienteStatus.setForeground(new java.awt.Color(0, 0, 153));
+        txtNomePacienteStatus.setEnabled(false);
 
-        txtNomeMedicoConsulta.setBackground(new java.awt.Color(204, 255, 255));
-        txtNomeMedicoConsulta.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtNomeMedicoConsulta.setForeground(new java.awt.Color(0, 0, 153));
-
-        txtHoraAtendimento.setBackground(new java.awt.Color(204, 255, 255));
-        txtHoraAtendimento.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtHoraAtendimento.setForeground(new java.awt.Color(0, 0, 153));
+        txtHoraAtendimentoStatus.setBackground(new java.awt.Color(204, 255, 255));
+        txtHoraAtendimentoStatus.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        txtHoraAtendimentoStatus.setForeground(new java.awt.Color(0, 0, 153));
+        txtHoraAtendimentoStatus.setEnabled(false);
 
         cbTipoConuslta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "4 - Grave", "5 - Padrão", "6 - Urgente" }));
+        cbTipoConuslta.setEnabled(false);
         cbTipoConuslta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTipoConusltaActionPerformed(evt);
             }
         });
 
-        AreaSintomas.setBackground(new java.awt.Color(204, 255, 255));
-        AreaSintomas.setColumns(20);
-        AreaSintomas.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        AreaSintomas.setForeground(new java.awt.Color(0, 0, 153));
-        AreaSintomas.setRows(5);
-        jScrollPane1.setViewportView(AreaSintomas);
+        AreaSintomasStatus.setEditable(false);
+        AreaSintomasStatus.setBackground(new java.awt.Color(204, 255, 255));
+        AreaSintomasStatus.setColumns(20);
+        AreaSintomasStatus.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        AreaSintomasStatus.setForeground(new java.awt.Color(0, 0, 153));
+        AreaSintomasStatus.setRows(5);
+        jScrollPane1.setViewportView(AreaSintomasStatus);
 
         dataConsulta.setBackground(new java.awt.Color(255, 255, 255));
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
+        dataConsulta.setEnabled(false);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -192,28 +189,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        codPacienteConuslta.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        codPacienteConuslta.setForeground(new java.awt.Color(255, 255, 255));
-        codPacienteConuslta.setText("jLabel7");
-
-        codMedicoConsulta.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        codMedicoConsulta.setForeground(new java.awt.Color(255, 255, 255));
-        codMedicoConsulta.setText("jLabel7");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -294,18 +269,13 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(jLabel4)
                                 .addGap(0, 0, 0)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dataConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtHoraAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel5)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(cbTipoConuslta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtHoraAtendimentoStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addGap(0, 0, 0)
+                                .addComponent(cbTipoConuslta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -313,65 +283,42 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 250, Short.MAX_VALUE)
                                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(198, 198, 198)
                                 .addComponent(jButton1))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(51, 51, 51)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(0, 0, 0)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNomePacienteConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNomeMedicoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(codMedicoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .addComponent(codPacienteConuslta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5)
-                            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(txtNomePacienteStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dataConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton4});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(txtNomePacienteConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(codPacienteConuslta)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(txtNomeMedicoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(codMedicoConsulta)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
+                        .addComponent(txtNomePacienteStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
                     .addComponent(dataConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(cbTipoConuslta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(txtHoraAtendimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtHoraAtendimentoStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
@@ -379,14 +326,12 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton4});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -408,15 +353,11 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        funcoes.funcao.busca_paciente();
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        funcoes.funcao.busca_medico();
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AreaSintomasStatus.setText("");
+        txtNomePacienteStatus.setText("");
+        txtHoraAtendimentoStatus.setText("");
+        cbTipoConuslta.setSelectedItem(0);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -427,15 +368,15 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                 break;
             case 1:
 //                JOptionPane.showMessageDialog(null, "Case 1");
-                AreaSintomas.setText("4 - Grave\nConstantes vômitos,\nDores no corpo,\nManchas vermelhas na parte inferior do braço e febre alta.\n" + "");
+                AreaSintomasStatus.setText("4 - Grave\nConstantes vômitos,\nDores no corpo,\nManchas vermelhas na parte inferior do braço e febre alta.\n" + "");
                 break;
             case 2:
 //                JOptionPane.showMessageDialog(null, "Case 2");
-                AreaSintomas.setText("5 - Padrão\nDores na garganta,\nFebre alta,\nFraqueza quando caminha." + "");
+                AreaSintomasStatus.setText("5 - Padrão\nDores na garganta,\nFebre alta,\nFraqueza quando caminha." + "");
                 break;
             case 3:
 //                JOptionPane.showMessageDialog(null, "Case 3");
-                AreaSintomas.setText("6 - Urgente\nDores no coração,\nManchas avermelhadas no braço direito,\nFalta de ar e aparenta pressão alta." + "");
+                AreaSintomasStatus.setText("6 - Urgente\nDores no coração,\nManchas avermelhadas no braço direito,\nFalta de ar e aparenta pressão alta." + "");
                 break;
         }
     }//GEN-LAST:event_cbTipoConusltaActionPerformed
@@ -445,31 +386,24 @@ public class CadConsulta extends javax.swing.JInternalFrame {
             cadastrarConsulta();
             LimparCampos();
         } catch (SQLException ex) {
-            Logger.getLogger(CadConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DetalhesConsultaPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        LimparCampos();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea AreaSintomas;
-    private javax.swing.JComboBox cbTipoConuslta;
-    public static javax.swing.JLabel codMedicoConsulta;
-    public static javax.swing.JLabel codPacienteConuslta;
-    private com.toedter.calendar.JDateChooser dataConsulta;
+    public static javax.swing.JTextArea AreaSintomasStatus;
+    public static javax.swing.JComboBox cbTipoConuslta;
+    public static com.toedter.calendar.JDateChooser dataConsulta;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -483,8 +417,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
     public static javax.swing.JLabel lbData;
     public static javax.swing.JLabel lbHora;
     public static javax.swing.JLabel lbNomeOperador;
-    private javax.swing.JTextField txtHoraAtendimento;
-    public static javax.swing.JTextField txtNomeMedicoConsulta;
-    public static javax.swing.JTextField txtNomePacienteConsulta;
+    public static javax.swing.JTextField txtHoraAtendimentoStatus;
+    public static javax.swing.JTextField txtNomePacienteStatus;
     // End of variables declaration//GEN-END:variables
 }
