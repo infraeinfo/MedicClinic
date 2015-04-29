@@ -46,12 +46,12 @@ public class Status extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtBuscaStatus = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnBuscarPacientes = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaBuscaStatus = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        btnFecharJanela = new javax.swing.JButton();
         btnStatusLaudoPacientes = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnDetalhePacientes = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -84,10 +84,10 @@ public class Status extends javax.swing.JInternalFrame {
         txtBuscaStatus.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txtBuscaStatus.setForeground(new java.awt.Color(0, 0, 153));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarPacientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
+        btnBuscarPacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarPacientesActionPerformed(evt);
             }
         });
 
@@ -116,10 +116,10 @@ public class Status extends javax.swing.JInternalFrame {
             tabelaBuscaStatus.getColumnModel().getColumn(3).setPreferredWidth(10);
         }
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnFecharJanela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
+        btnFecharJanela.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnFecharJanelaActionPerformed(evt);
             }
         });
 
@@ -130,10 +130,10 @@ public class Status extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton4.setText("Detalhes Paciente");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnDetalhePacientes.setText("Detalhes Paciente");
+        btnDetalhePacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnDetalhePacientesActionPerformed(evt);
             }
         });
 
@@ -152,13 +152,13 @@ public class Status extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))
+                                .addComponent(btnBuscarPacientes)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(256, 256, 256)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnFecharJanela, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)
+                        .addComponent(btnDetalhePacientes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStatusLaudoPacientes)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -170,14 +170,14 @@ public class Status extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnBuscarPacientes))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(btnFecharJanela)
                     .addComponent(btnStatusLaudoPacientes)
-                    .addComponent(jButton4))
+                    .addComponent(btnDetalhePacientes))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -206,12 +206,12 @@ public class Status extends javax.swing.JInternalFrame {
         LaudosMedicos.txtNomeMedicoLaudos.setText(Principal.lbOperador.getText());
     }//GEN-LAST:event_btnStatusLaudoPacientesActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnFecharJanelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharJanelaActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnFecharJanelaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+    private void btnBuscarPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPacientesActionPerformed
+
         dtm.setRowCount(0);
         Connection con;
         try {
@@ -222,7 +222,7 @@ public class Status extends javax.swing.JInternalFrame {
             String sql = "select p.Nome, m.nome, c.horario, c.tipo_consulta from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?  ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaStatus.getText() + "%");
-            
+
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
@@ -230,67 +230,49 @@ public class Status extends javax.swing.JInternalFrame {
                     rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
                 dtm.addRow(Linha);
             }
-            
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBuscarPacientesActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnDetalhePacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalhePacientesActionPerformed
         String nome, cod;
         funcoes.funcao.detalhes_paciente_Status();
         int linha_selecionada = tabelaBuscaStatus.getSelectedRow();
         DetalhesConsultaPaciente.txtNomePacienteStatus.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString());
         nome = tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString();
-
-//        ///////////////////
         Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-//            String sql = "SELECT *from consulta where nome LIKE ?";
             String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from paciente p , consulta c where c.paciente_cod=p.cod and p.nome LIKE ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText() + "%");
-            
+
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 AreaSintomasStatus.setText(rs.getString("c.sintomas"));
                 txtHoraAtendimentoStatus.setText(rs.getString("c.horario"));
                 dataConsulta.setDateFormatString(rs.getString("c.data_consulta"));
-//            String cod = rs.getString(1);
-//            txtCodEnde.setText(cod);
-                //String sintomas = rs.getString(6);
-//            DetalhesConsultaPaciente.AreaSintomasStatus.setText("sintomas");
-                // System.out.println("Nome: "+nome);
-                //System.out.println("Sintomas"+sintomas);
 
-//            while (rs.next()) {
-//                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
-//                Object Linha[] = {rs.getString("cod"), rs.getString("crm"),
-//                    rs.getString("nome"), rs.getString("especialidade"), rs.getString("atendimento"), false, false};
-//                dtm.addRow(Linha);
-//            }
             }
-            
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
-        
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+
+    }//GEN-LAST:event_btnDetalhePacientesActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         dtm.setRowCount(0);
         Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-//            String sql = "select p.Nome, m.nome from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?";
-//            String sql = "SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod=medico.cod LIKE ?";
-//            String sql ="SELECT * FROM paciente INNER JOIN consulta ON consulta.paciente_cod=paciente.cod"; //"SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod = medico.cod LIKE ?";
             String sql = "select p.Nome, m.nome, c.horario, c.tipo_consulta from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?  ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaStatus.getText() + "%");
-            
+
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
@@ -298,7 +280,7 @@ public class Status extends javax.swing.JInternalFrame {
                     rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
                 dtm.addRow(Linha);
             }
-            
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
@@ -306,10 +288,10 @@ public class Status extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscarPacientes;
+    private javax.swing.JButton btnDetalhePacientes;
+    private javax.swing.JButton btnFecharJanela;
     private javax.swing.JButton btnStatusLaudoPacientes;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

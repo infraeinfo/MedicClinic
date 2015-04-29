@@ -9,6 +9,7 @@ import conexão.ConectaBanco;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
@@ -285,7 +286,7 @@ public class Autenticacao extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSenhaKeyPressed
 
     private void txtSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyReleased
-        if (evt.getKeyChar() == evt.VK_ENTER) //se pressionou a tecla enter
+        if (evt.getKeyChar() == KeyEvent.VK_ENTER) //se pressionou a tecla enter
         {
             Logar();
         }
@@ -301,6 +302,14 @@ public class Autenticacao extends javax.swing.JFrame {
         Timer timer = new Timer(1000, new hora());
         timer.start();
     }//GEN-LAST:event_formWindowOpened
+    public void PermisaoMedicos() {
+        Principal.btnLaudosMedicos.setVisible(true);
+        Principal.btnCadPacientes.setVisible(false);
+        Principal.btnMedico.setVisible(false);
+        Principal.btnConsulta.setVisible(false);
+        Principal.jMenuCadastros.setEnabled(false);
+        funcoes.funcao.laudo_medico();
+    }
 
     public void Logar() throws HeadlessException {
         try {
@@ -318,8 +327,20 @@ public class Autenticacao extends javax.swing.JFrame {
                 funcoes.funcao.telaPrincipal();
                 Principal.cod = rs.getString("cod");
                 Principal.lbOperador.setText(rs.getString("nome"));
-                Principal.tipo=rs.getString("tipo");
+                Principal.tipo = rs.getString("tipo");
                 Principal.lbTipoFuncao.setText(rs.getString("tipo"));
+                if (Principal.lbTipoFuncao.getText().equals("Medico")) {
+                    PermisaoMedicos();
+//                    Principal.btnLaudosMedicos.setVisible(true);
+//                    Principal.btnCadPacientes.setVisible(false);
+//                    Principal.btnMedico.setVisible(false);
+//                    Principal.btnConsulta.setVisible(false);
+//                    Principal.jMenuCadastros.setEnabled(false);
+                } else {
+                    Principal.btnLaudosMedicos.setVisible(false);
+                    Principal.JmenuLaudos.setVisible(false);
+
+                }
                 dispose();
             } else {
                 txtUsuario.setText("");
@@ -350,8 +371,8 @@ public class Autenticacao extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-//                if ("Windows".equals(info.getName())) {
+//                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

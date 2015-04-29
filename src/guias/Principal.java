@@ -40,15 +40,17 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         centro = new javax.swing.JDesktopPane();
+        jPanel2 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton2 = new javax.swing.JButton();
+        btnCadPacientes = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        jButton1 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnConsulta = new javax.swing.JButton();
+        btnStatus = new javax.swing.JButton();
         jSeparator5 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnMedico = new javax.swing.JButton();
+        btnLaudosMedicos = new javax.swing.JButton();
         jSeparator6 = new javax.swing.JToolBar.Separator();
         jToolBar2 = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
@@ -64,7 +66,7 @@ public class Principal extends javax.swing.JFrame {
         lbHora = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        jMenuCadastros = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -75,7 +77,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         Arquivos = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        JmenuLaudos = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -96,6 +98,10 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
+        centro.setBackground(new java.awt.Color(204, 204, 255));
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411767931_519563-059_CircledOff-32.png"))); // NOI18N
         jButton4.setToolTipText("Sair do sistema com opção de BKP.");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -104,95 +110,133 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setBackground(new java.awt.Color(204, 204, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/hospital-simbolo1.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 700, Short.MAX_VALUE)
+                        .addComponent(jButton4))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout centroLayout = new javax.swing.GroupLayout(centro);
         centro.setLayout(centroLayout);
         centroLayout.setHorizontalGroup(
             centroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, centroLayout.createSequentialGroup()
-                .addContainerGap(679, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addContainerGap())
+            .addGroup(centroLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         centroLayout.setVerticalGroup(
             centroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(centroLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
-        centro.setLayer(jButton4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        centro.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jToolBar1.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.setFloatable(false);
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839971_icon-person-stalker-64.png"))); // NOI18N
-        jButton2.setText("Pacientes");
-        jButton2.setToolTipText("Cadastrar Pacientes");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCadPacientes.setBackground(new java.awt.Color(255, 255, 255));
+        btnCadPacientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839971_icon-person-stalker-64.png"))); // NOI18N
+        btnCadPacientes.setText("Pacientes");
+        btnCadPacientes.setToolTipText("Cadastrar Pacientes");
+        btnCadPacientes.setFocusable(false);
+        btnCadPacientes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCadPacientes.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCadPacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCadPacientesActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
+        jToolBar1.add(btnCadPacientes);
+
+        jSeparator3.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.add(jSeparator3);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411840672_icon-clipboard-64.png"))); // NOI18N
-        jButton1.setText("Consulta");
-        jButton1.setToolTipText("Cadastrar Consultas de Clientes/Medicos");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnConsulta.setBackground(new java.awt.Color(255, 255, 255));
+        btnConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411840672_icon-clipboard-64.png"))); // NOI18N
+        btnConsulta.setText("Consulta");
+        btnConsulta.setToolTipText("Cadastrar Consultas de Clientes/Medicos");
+        btnConsulta.setFocusable(false);
+        btnConsulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnConsulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnConsultaActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(btnConsulta);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838138_icon-ios7-people-outline-64.png"))); // NOI18N
-        jButton6.setText("Status");
-        jButton6.setToolTipText("Mostra a Fila de Atendimento");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnStatus.setBackground(new java.awt.Color(255, 255, 255));
+        btnStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838138_icon-ios7-people-outline-64.png"))); // NOI18N
+        btnStatus.setText("Status");
+        btnStatus.setToolTipText("Mostra a Fila de Atendimento");
+        btnStatus.setFocusable(false);
+        btnStatus.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnStatus.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnStatusActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton6);
+        jToolBar1.add(btnStatus);
+
+        jSeparator5.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.add(jSeparator5);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838928_icon-ios7-contact-64.png"))); // NOI18N
-        jButton3.setText("Médicos");
-        jButton3.setToolTipText("Cadastrar Novo Médico");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnMedico.setBackground(new java.awt.Color(255, 255, 255));
+        btnMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838928_icon-ios7-contact-64.png"))); // NOI18N
+        btnMedico.setText("Médicos");
+        btnMedico.setToolTipText("Cadastrar Novo Médico");
+        btnMedico.setFocusable(false);
+        btnMedico.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnMedico.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnMedicoActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton3);
+        jToolBar1.add(btnMedico);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838657_icon-thumbsup-64.png"))); // NOI18N
-        jButton5.setText("Láudos");
-        jButton5.setToolTipText("Área destinada a Médicos para Fazer seus Laudos.");
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnLaudosMedicos.setBackground(new java.awt.Color(255, 255, 255));
+        btnLaudosMedicos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838657_icon-thumbsup-64.png"))); // NOI18N
+        btnLaudosMedicos.setText("Láudos");
+        btnLaudosMedicos.setToolTipText("Área destinada a Médicos para Fazer seus Laudos.");
+        btnLaudosMedicos.setFocusable(false);
+        btnLaudosMedicos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnLaudosMedicos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLaudosMedicos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnLaudosMedicosActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton5);
+        jToolBar1.add(btnLaudosMedicos);
+
+        jSeparator6.setBackground(new java.awt.Color(255, 255, 255));
         jToolBar1.add(jSeparator6);
 
         jToolBar2.setFloatable(false);
@@ -246,33 +290,31 @@ public class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(centro)
-                        .addContainerGap())))
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+                    .addComponent(centro)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(centro)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 0, 0)
                         .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783258_icon-ios7-gear-16.png"))); // NOI18N
         jMenu1.setText("Sistema");
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411842007_icon-ios7-compose-16.png"))); // NOI18N
-        jMenu3.setText("Cadastros");
+        jMenuCadastros.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411842007_icon-ios7-compose-16.png"))); // NOI18N
+        jMenuCadastros.setText("Cadastros");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783536_icon-person-add-16.png"))); // NOI18N
@@ -282,7 +324,7 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenuCadastros.add(jMenuItem1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839988_icon-person-stalker-16.png"))); // NOI18N
@@ -292,7 +334,7 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        jMenuCadastros.add(jMenuItem2);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838942_icon-ios7-contact-16.png"))); // NOI18N
@@ -302,7 +344,7 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem3);
+        jMenuCadastros.add(jMenuItem3);
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411840689_icon-clipboard-16.png"))); // NOI18N
@@ -312,9 +354,9 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
+        jMenuCadastros.add(jMenuItem9);
 
-        jMenu1.add(jMenu3);
+        jMenu1.add(jMenuCadastros);
         jMenu1.add(jSeparator4);
 
         jMenuItem5.setText("LogOff");
@@ -336,14 +378,14 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu4.setText("Clinica");
 
-        jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        jMenuItem7.setText("Laudos");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        JmenuLaudos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        JmenuLaudos.setText("Laudos");
+        JmenuLaudos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                JmenuLaudosActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem7);
+        jMenu4.add(JmenuLaudos);
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         jMenuItem8.setText("Status");
@@ -400,21 +442,21 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaActionPerformed
         funcoes.funcao.cad_consulta();
         CadConsulta.lbNomeOperador.setText(Principal.lbOperador.getText());
         CadConsulta.lbCodOperador.setText(cod);
         CadConsulta.lbData.setText(lbData.getText());
         CadConsulta.lbHora.setText(lbHora.getText());
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnConsultaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnCadPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadPacientesActionPerformed
         funcoes.funcao.cad_paciente();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnCadPacientesActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMedicoActionPerformed
         funcoes.funcao.cad_medico();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnMedicoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         funcoes.funcao.cad_usuario();
@@ -432,17 +474,17 @@ public class Principal extends javax.swing.JFrame {
         funcoes.funcao.cad_medico();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnLaudosMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaudosMedicosActionPerformed
         funcoes.funcao.laudo_medico();
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnLaudosMedicosActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void JmenuLaudosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmenuLaudosActionPerformed
         funcoes.funcao.laudo_medico();
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_JmenuLaudosActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatusActionPerformed
         funcoes.funcao.status();
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_btnStatusActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         funcoes.funcao.status();
@@ -499,8 +541,8 @@ public class Principal extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-//                if ("Windows".equals(info.getName())) {
+//                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -519,23 +561,25 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Arquivos;
+    public static javax.swing.JMenuItem JmenuLaudos;
+    public static javax.swing.JButton btnCadPacientes;
+    public static javax.swing.JButton btnConsulta;
+    public static javax.swing.JButton btnLaudosMedicos;
+    public static javax.swing.JButton btnMedico;
+    public static javax.swing.JButton btnStatus;
     public static javax.swing.JDesktopPane centro;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    public static javax.swing.JMenu jMenuCadastros;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
@@ -543,10 +587,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;

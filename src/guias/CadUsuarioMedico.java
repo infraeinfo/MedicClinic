@@ -7,7 +7,6 @@ package guias;
  */
 
 
-import guias.*;
 import conexão.ConectaBanco;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -42,7 +41,7 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         {      
         Connection con;
         try{
-        con=null;    
+//        con=null;    
         con = ConectaBanco.conecta("bdclinica");
         String query = "INSERT INTO login (nome,telefone,cpf,usuario,senha,tipo) values (?,?,?,?,?,?)";
         PreparedStatement pst = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
@@ -366,45 +365,30 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-       
-        ///////////////////
-        Connection con;
-        try {
-            con = ConectaBanco.conecta("bdclinica");
-//            String sql = "SELECT *from consulta where nome LIKE ?";
-            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from paciente p , consulta c where c.paciente_cod=p.cod and p.nome LIKE ? ";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText());
-
-            ResultSet rs = pst.executeQuery();
-           while ( rs.next()){
-            DetalhesConsultaPaciente.AreaSintomasStatus.setText(rs.getString("sintomas"));
-            DetalhesConsultaPaciente.txtHoraAtendimentoStatus.setText(rs.getString("horario"));
-//            String cod = rs.getString(1);
-//            txtCodEnde.setText(cod);
-            //String sintomas = rs.getString(6);
-//            DetalhesConsultaPaciente.AreaSintomasStatus.setText("sintomas");
-           // System.out.println("Nome: "+nome);
-            //System.out.println("Sintomas"+sintomas);
-            
-//            while (rs.next()) {
-//                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
-//                Object Linha[] = {rs.getString("cod"), rs.getString("crm"),
-//                    rs.getString("nome"), rs.getString("especialidade"), rs.getString("atendimento"), false, false};
-//                dtm.addRow(Linha);
-//            }
-        }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
-        }
+//        Connection con;
+//        try {
+//            con = ConectaBanco.conecta("bdclinica");
+////            String sql = "SELECT *from consulta where nome LIKE ?";
+//            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from paciente p , consulta c where c.paciente_cod=p.cod and p.nome LIKE ? ";
+//            PreparedStatement pst = con.prepareStatement(sql);
+//            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText());
+//
+//            ResultSet rs = pst.executeQuery();
+//           while ( rs.next()){
+//            DetalhesConsultaPaciente.AreaSintomasStatus.setText(rs.getString("sintomas"));
+//            DetalhesConsultaPaciente.txtHoraAtendimentoStatus.setText(rs.getString("horario"));
+//        }
+//
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+//        }
         
     }//GEN-LAST:event_formInternalFrameOpened
 
     public void verificaUsurio() throws HeadlessException {
         Connection con;
         try{
-            con=null;
+//            con=null;
             con = ConectaBanco.conecta("bdclinica");
             String query = "SELECT * FROM login WHERE usuario = ?";
             PreparedStatement pst = con.prepareStatement(query);

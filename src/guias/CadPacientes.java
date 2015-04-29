@@ -9,6 +9,7 @@ import com.toedter.calendar.JDateChooser;
 import conexão.ConectaBanco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,80 @@ public class CadPacientes extends javax.swing.JInternalFrame {
     }
 
     public static String codEndereco;
+
+    public String AlteraPaciente() throws SQLException {
+//        Connection con;
+
+        con = ConectaBanco.conecta("bdclinica");
+//        String sql = "select * from logradouro Where cep='" +txtBuscaCep+ "'";
+        String sql = "update paciente set nome=?,rg=?,cpf=?,telefone=?,celular=?,data_nasc=?,estado_civil=?,tipo_sangue=?,altura=?,peso=?,logradouro_cod=? where cod=?";
+//        try (PreparedStatement pst = con.prepareStatement(sql)) {
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, txtNome.getText());
+            pst.setString(2, txtRg.getText());
+            pst.setString(3, txtCpf.getText());
+            pst.setString(4, txtTelefone.getText());
+            pst.setString(5, txtCelular.getText());
+            pst.setString(6, dataNasci.getDate().toString());
+            pst.setString(7, cbEstadoCivil.getSelectedItem().toString());
+            pst.setString(8, cbTipoSangue.getSelectedItem().toString());
+            pst.setString(9, txtAltura.getText());
+            pst.setString(10, txtPeso.getText());
+            pst.setString(11, txtCodEndereco.getText());
+            pst.setString(12, lbCodigoPaciente.getText());
+
+            //pst.executeUpdate();
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Sucesso na Alteração!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+                return "Alterado com sucesso.";
+//                return JOptionPane.showMessageDialog(null, "Sucesso na Alteração!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao Alterar!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+                return "Erro ao alterar";
+//                JOptionPane.showMessageDialog(null, "Falha ao Alterar!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+            }
+//            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+        return null;
+    }
+
+    public void buscaCPF() throws SQLException {
+        Connection con;
+
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//        String sql = "select * from logradouro Where cep='" +txtBuscaCep+ "'";
+            String sql = "select * from paciente Where cpf LIKE ?";
+            try (PreparedStatement pst = con.prepareStatement(sql)) {
+                pst.setString(1, txtCpf.getText());
+                ResultSet rs = pst.executeQuery();
+
+                while (rs.next()) {
+                    txtNome.setText(rs.getString("Nome"));
+                    txtRg.setText(rs.getString("rg"));
+                    txtCpf.requestFocus();
+                    txtTelefone.setText(rs.getString("telefone"));
+                    txtCelular.setText(rs.getString("celular"));
+                    dataNasci.setDateFormatString(rs.getString("data_nasc"));
+                    cbEstadoCivil.setSelectedItem(rs.getString("estado_civil"));
+                    cbTipoSangue.setSelectedItem(rs.getString("tipo_sangue"));
+                    txtAltura.setText(rs.getString("altura"));
+                    txtPeso.setText(rs.getString("peso"));
+                    txtCodEndereco.setText(rs.getString("logradouro_cod"));
+                    lbCodigoPaciente.setText(rs.getString("cod"));
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+
+    }
 
     //Insert no banco
     public void cadastrarPacientes() throws SQLException {
@@ -114,6 +189,8 @@ public class CadPacientes extends javax.swing.JInternalFrame {
         btnAbreLogradouro = new javax.swing.JButton();
         txtCodEndereco = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        lbCodigoPaciente = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -181,6 +258,8 @@ public class CadPacientes extends javax.swing.JInternalFrame {
 
         cbEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "Casado(A)", "Solteiro(A)", "Divorciado(A)", "Viuvo(A)", "União Estavél" }));
 
+        dataNasci.setBackground(new java.awt.Color(255, 255, 255));
+
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +268,11 @@ public class CadPacientes extends javax.swing.JInternalFrame {
         });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         btnSalvarCadPacientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
         btnSalvarCadPacientes.addActionListener(new java.awt.event.ActionListener() {
@@ -217,6 +301,17 @@ public class CadPacientes extends javax.swing.JInternalFrame {
 
         jLabel11.setText("Cod. Endereco");
 
+        jButton4.setText("B");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        lbCodigoPaciente.setBackground(new java.awt.Color(255, 255, 255));
+        lbCodigoPaciente.setForeground(new java.awt.Color(102, 204, 255));
+        lbCodigoPaciente.setText("codigo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -236,9 +331,14 @@ public class CadPacientes extends javax.swing.JInternalFrame {
                                 .addGap(0, 0, 0)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txtCpf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
-                                        .addComponent(txtRg, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(txtCpf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                                            .addComponent(txtRg, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lbCodigoPaciente))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addComponent(txtCelular, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
@@ -298,7 +398,9 @@ public class CadPacientes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4)
+                    .addComponent(lbCodigoPaciente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -403,6 +505,23 @@ public class CadPacientes extends javax.swing.JInternalFrame {
         LimparCampos();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            buscaCPF();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadPacientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            AlteraPaciente();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadPacientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbreLogradouro;
@@ -413,6 +532,7 @@ public class CadPacientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -425,6 +545,7 @@ public class CadPacientes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbCodigoPaciente;
     private javax.swing.JTextField txtAltura;
     private javax.swing.JTextField txtCelular;
     public static javax.swing.JTextField txtCodEndereco;
