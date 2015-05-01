@@ -7,8 +7,8 @@ package guias;
 
 import conexão.ConectaBanco;
 import static guias.DetalhesConsultaPaciente.AreaSintomasStatus;
-import static guias.DetalhesConsultaPaciente.dataConsulta;
-import static guias.DetalhesConsultaPaciente.txtHoraAtendimentoStatus;
+//import static guias.DetalhesConsultaPaciente.dataConsulta;
+//import static guias.DetalhesConsultaPaciente.txtHoraAtendimentoStatus;
 import static guias.Principal.lbOperador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,12 +50,11 @@ public class Status extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaBuscaStatus = new javax.swing.JTable();
         btnFecharJanela = new javax.swing.JButton();
-        btnStatusLaudoPacientes = new javax.swing.JButton();
         btnDetalhePacientes = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Statu   - Fila de Agendameto");
+        setTitle("Status   - Sala de Espera");
         setToolTipText("");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -123,13 +122,6 @@ public class Status extends javax.swing.JInternalFrame {
             }
         });
 
-        btnStatusLaudoPacientes.setText("LaudarPaciente");
-        btnStatusLaudoPacientes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStatusLaudoPacientesActionPerformed(evt);
-            }
-        });
-
         btnDetalhePacientes.setText("Detalhes Paciente");
         btnDetalhePacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,26 +134,22 @@ public class Status extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnBuscarPacientes)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(256, 256, 256)
-                        .addComponent(btnFecharJanela, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDetalhePacientes)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStatusLaudoPacientes)))
+                        .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBuscarPacientes)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(256, 256, 256)
+                .addComponent(btnFecharJanela, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDetalhePacientes)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,7 +164,6 @@ public class Status extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFecharJanela)
-                    .addComponent(btnStatusLaudoPacientes)
                     .addComponent(btnDetalhePacientes))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -200,11 +187,6 @@ public class Status extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnStatusLaudoPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStatusLaudoPacientesActionPerformed
-        funcoes.funcao.laudo_medico();
-        LaudosMedicos.txtNomeMedicoLaudos.setText(Principal.lbOperador.getText());
-    }//GEN-LAST:event_btnStatusLaudoPacientesActionPerformed
 
     private void btnFecharJanelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharJanelaActionPerformed
         this.dispose();
@@ -252,9 +234,7 @@ public class Status extends javax.swing.JInternalFrame {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 AreaSintomasStatus.setText(rs.getString("c.sintomas"));
-                txtHoraAtendimentoStatus.setText(rs.getString("c.horario"));
-                dataConsulta.setDateFormatString(rs.getString("c.data_consulta"));
-
+                DetalhesConsultaPaciente.lbTipoConsulta.setText(rs.getString("c.tipo_consulta"));
             }
 
         } catch (SQLException e) {
@@ -291,7 +271,6 @@ public class Status extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnBuscarPacientes;
     private javax.swing.JButton btnDetalhePacientes;
     private javax.swing.JButton btnFecharJanela;
-    private javax.swing.JButton btnStatusLaudoPacientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

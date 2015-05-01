@@ -24,16 +24,15 @@ public class BuscaPaciente extends javax.swing.JInternalFrame {
      */
     public BuscaPaciente() {
         initComponents();
-         dtm=(DefaultTableModel)tabelaBuscaPacientes.getModel();
+        dtm = (DefaultTableModel) tabelaBuscaPacientes.getModel();
     }
     public static String codPacienteConsulta;
 //    public static String nomeMedicoConsulta;
-    
-    
-    
+
     //Sempre necessario para manipular tabelas com registros criar uma default table nome
     // não esquecer de inicar as tabelas no construtro da classe.
     public DefaultTableModel dtm;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,6 +54,23 @@ public class BuscaPaciente extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Busca de Pacientes (Para serem Consultados)");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
@@ -111,10 +127,10 @@ public class BuscaPaciente extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 153, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("ALERTA");
+        jLabel2.setText("DIGITE O NOME DO PACIENTE OU CLIQUE NO BOTAO LUPA PARA LISTAR TODOS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -176,28 +192,26 @@ public class BuscaPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
         dtm.setRowCount(0);
         Connection con;
-        try{
-           con = ConectaBanco.conecta("bdclinica");
-            String sql="select * from paciente Where nome LIKE ?";
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+            String sql = "select * from paciente Where nome LIKE ?";
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, txtBuscaPaciente.getText()+"%");
-            
+            pst.setString(1, txtBuscaPaciente.getText() + "%");
+
             ResultSet rs = pst.executeQuery();
-            while(rs.next())
-            {
+            while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
-                Object Linha[]={rs.getString("cod"),rs.getString("Nome"),
-                    rs.getString("rg"),rs.getString("cpf"),false,false};
+                Object Linha[] = {rs.getString("cod"), rs.getString("Nome"),
+                    rs.getString("rg"), rs.getString("cpf"), false, false};
                 dtm.addRow(Linha);
             }
-            
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Erro :"+e.getMessage());
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
-       
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tabelaBuscaPacientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaBuscaPacientesMouseClicked
@@ -205,8 +219,33 @@ public class BuscaPaciente extends javax.swing.JInternalFrame {
         CadConsulta.codPacienteConuslta.setText(tabelaBuscaPacientes.getValueAt(linha_selecionada, 0).toString());
         CadConsulta.txtNomePacienteConsulta.setText(tabelaBuscaPacientes.getValueAt(linha_selecionada, 1).toString());
         this.dispose();
-      
+
     }//GEN-LAST:event_tabelaBuscaPacientesMouseClicked
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+
+        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+            String sql = "select * from paciente Where nome LIKE ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtBuscaPaciente.getText() + "%");
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+                Object Linha[] = {rs.getString("cod"), rs.getString("Nome"),
+                    rs.getString("rg"), rs.getString("cpf"), false, false};
+                dtm.addRow(Linha);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+
+
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

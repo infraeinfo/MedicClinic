@@ -54,6 +54,23 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Busca de Medicos (Para Consultar Pacientes)");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
@@ -116,10 +133,10 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
             tabelaBuscaMedico.getColumnModel().getColumn(3).setPreferredWidth(100);
         }
 
-        jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 153, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("DIGITE O NOME DO MEDICO OU CLIQUE NO BOTAO LUPA");
+        jLabel2.setText("DIGITE O NOME DO MEDICO OU CLIQUE NO BOTAO LUPA PARA LISTAR TODOS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,6 +225,31 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
         CadConsulta.txtNomeMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 2).toString());
         this.dispose();
     }//GEN-LAST:event_tabelaBuscaMedicoMouseClicked
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+
+                dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+            String sql = "select * from medico Where especialidade LIKE ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, txtBuscaMedico.getText() + "%");
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+                Object Linha[] = {rs.getString("cod"), rs.getString("crm"),
+                    rs.getString("nome"), rs.getString("especialidade"), rs.getString("atendimento"), false, false};
+                dtm.addRow(Linha);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+
+        
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

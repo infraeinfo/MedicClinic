@@ -570,7 +570,7 @@ public class Principal extends javax.swing.JFrame {
     public static javax.swing.JDesktopPane centro;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    public static javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

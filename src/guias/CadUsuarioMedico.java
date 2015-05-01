@@ -111,18 +111,18 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
-        txtTelefone = new javax.swing.JTextField();
         txtUsuario = new javax.swing.JTextField();
         cbSetor = new javax.swing.JComboBox();
-        txtCrm = new javax.swing.JTextField();
         txtSenha = new javax.swing.JPasswordField();
         txtSenha2 = new javax.swing.JPasswordField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         lbAlerta = new javax.swing.JLabel();
-        txtCodigoUsuario = new javax.swing.JTextField();
+        txtNome = new javax.swing.JLabel();
+        txtTelefone = new javax.swing.JLabel();
+        txtCrm = new javax.swing.JLabel();
+        txtCodigoUsuario = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -169,16 +169,6 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Repita Senha:");
 
-        txtNome.setEditable(false);
-        txtNome.setBackground(new java.awt.Color(204, 255, 255));
-        txtNome.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtNome.setForeground(new java.awt.Color(0, 0, 204));
-
-        txtTelefone.setEditable(false);
-        txtTelefone.setBackground(new java.awt.Color(204, 255, 255));
-        txtTelefone.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtTelefone.setForeground(new java.awt.Color(0, 0, 204));
-
         txtUsuario.setBackground(new java.awt.Color(204, 255, 255));
         txtUsuario.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtUsuario.setForeground(new java.awt.Color(0, 0, 204));
@@ -190,11 +180,6 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
         cbSetor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Medico" }));
         cbSetor.setEnabled(false);
-
-        txtCrm.setEditable(false);
-        txtCrm.setBackground(new java.awt.Color(204, 255, 255));
-        txtCrm.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtCrm.setForeground(new java.awt.Color(0, 0, 204));
 
         txtSenha.setBackground(new java.awt.Color(204, 255, 255));
         txtSenha.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -222,11 +207,20 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
             }
         });
 
-        txtCodigoUsuario.setEditable(false);
+        txtNome.setBackground(new java.awt.Color(204, 255, 255));
+        txtNome.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
+        txtNome.setForeground(new java.awt.Color(0, 0, 153));
+
+        txtTelefone.setBackground(new java.awt.Color(204, 255, 255));
+        txtTelefone.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        txtTelefone.setForeground(new java.awt.Color(0, 0, 153));
+
+        txtCrm.setBackground(new java.awt.Color(204, 255, 255));
+        txtCrm.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        txtCrm.setForeground(new java.awt.Color(0, 0, 153));
+
         txtCodigoUsuario.setBackground(new java.awt.Color(204, 255, 255));
-        txtCodigoUsuario.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         txtCodigoUsuario.setForeground(new java.awt.Color(0, 0, 153));
-        txtCodigoUsuario.setText("cod.usuario");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -262,16 +256,20 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(0, 0, 0)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(cbSetor, javax.swing.GroupLayout.Alignment.LEADING, 0, 147, Short.MAX_VALUE)
-                                    .addComponent(txtCrm, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTelefone, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cbSetor, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                                .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCrm, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(0, 130, Short.MAX_VALUE)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -284,22 +282,23 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefone))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCrm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCrm))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(cbSetor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(cbSetor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -326,6 +325,8 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtCrm, txtNome, txtTelefone});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -434,12 +435,12 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbAlerta;
-    public static javax.swing.JTextField txtCodigoUsuario;
-    public static javax.swing.JTextField txtCrm;
-    public static javax.swing.JTextField txtNome;
+    public static javax.swing.JLabel txtCodigoUsuario;
+    public static javax.swing.JLabel txtCrm;
+    public static javax.swing.JLabel txtNome;
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JPasswordField txtSenha2;
-    public static javax.swing.JTextField txtTelefone;
+    public static javax.swing.JLabel txtTelefone;
     public static javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

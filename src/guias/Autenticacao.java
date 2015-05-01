@@ -6,6 +6,8 @@
 package guias;
 
 import conexão.ConectaBanco;
+import static funcoes.funcao.centraliza;
+import static funcoes.funcao.laudo_medico;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -308,7 +310,7 @@ public class Autenticacao extends javax.swing.JFrame {
         Principal.btnMedico.setVisible(false);
         Principal.btnConsulta.setVisible(false);
         Principal.jMenuCadastros.setEnabled(false);
-        funcoes.funcao.laudo_medico();
+
     }
 
     public void Logar() throws HeadlessException {
@@ -331,6 +333,8 @@ public class Autenticacao extends javax.swing.JFrame {
                 Principal.lbTipoFuncao.setText(rs.getString("tipo"));
                 if (Principal.lbTipoFuncao.getText().equals("Medico")) {
                     PermisaoMedicos();
+//                    funcoes.funcao.laudo_medico();
+//                    centraliza(laudo_medico);
 //                    Principal.btnLaudosMedicos.setVisible(true);
 //                    Principal.btnCadPacientes.setVisible(false);
 //                    Principal.btnMedico.setVisible(false);

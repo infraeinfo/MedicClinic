@@ -133,23 +133,17 @@
                               </Group>
                               <Component id="txtNomeMedico" alignment="0" min="-2" pref="337" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="108" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="120" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="txtEspecialidadeMedico" max="32767" attributes="0"/>
                               <Component id="txtEmailMedico" pref="326" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace type="separate" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
-                                  <Component id="CodLogin" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                              <Component id="CodLogin" min="-2" pref="56" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -187,7 +181,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtEmailMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="CodLogin" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="CodLogin" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -398,9 +392,8 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="CodLogin">
+        <Component class="javax.swing.JLabel" name="CodLogin">
           <Properties>
-            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="cc" type="rgb"/>
             </Property>
@@ -410,7 +403,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="cod..Login"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>

@@ -25,7 +25,7 @@ import guias.DetalhesConsultaPaciente;
  * @author jhonatan
  */
 public class funcao {
-
+    
     public static JFrame sistenaPrincipal;
     public static JInternalFrame cad_consulta;
     public static JInternalFrame cad_pacientes;
@@ -101,6 +101,7 @@ public class funcao {
         if (busca_paciente == null || busca_paciente.isVisible() == false) {
             busca_paciente = new BuscaPaciente();
             guias.Principal.centro.add(busca_paciente);
+            centraliza(busca_paciente);
             busca_paciente.setVisible(true);
         } else {
             busca_paciente.toFront();
@@ -112,6 +113,7 @@ public class funcao {
         if (busca_medico == null || busca_medico.isVisible() == false) {
             busca_medico = new BuscaMedico();
             guias.Principal.centro.add(busca_medico);
+            centraliza(busca_medico);
             busca_medico.setVisible(true);
         } else {
             busca_medico.toFront();
@@ -123,6 +125,7 @@ public class funcao {
         if (cad_endereco == null || cad_endereco.isVisible() == false) {
             cad_endereco = new CadEndereco();//(txtNome.getText());
             guias.Principal.centro.add(cad_endereco);
+            centraliza(cad_endereco);
             cad_endereco.setVisible(true);
         } else {
             cad_endereco.toFront();
@@ -134,6 +137,7 @@ public class funcao {
         if (laudo_medico == null || laudo_medico.isVisible() == false) {
             laudo_medico = new LaudosMedicos();
             guias.Principal.centro.add(laudo_medico);
+            centraliza(laudo_medico);
             laudo_medico.setVisible(true);
         } else {
             laudo_medico.toFront();
@@ -155,6 +159,7 @@ public class funcao {
         if (sobre == null || sobre.isVisible() == false) {
             sobre = new Sobre();
             guias.Principal.centro.add(sobre);
+            centraliza(sobre);
             sobre.setVisible(true);
         } else {
             sobre.toFront();
@@ -183,25 +188,38 @@ public class funcao {
         }
     }
     
-    public static void cad_usario_medico(){
-        if(cad_usario_medico == null|| cad_usario_medico.isVisible()==false){
+    public static void cad_usario_medico() {
+        if (cad_usario_medico == null || cad_usario_medico.isVisible() == false) {
             cad_usario_medico = new CadUsuarioMedico();
             guias.Principal.centro.add(cad_usario_medico);
+            centraliza(cad_usario_medico);
             cad_usario_medico.setVisible(true);
-        }else{
+        } else {
             cad_usario_medico.toFront();
         }
     }
     
-    public static void detalhes_paciente_Status(){
-        if(detalhesBuscaPaciente==null || detalhesBuscaPaciente.isVisible()==false){
-            detalhesBuscaPaciente= new DetalhesConsultaPaciente();
+    public static void detalhes_paciente_Status() {
+        if (detalhesBuscaPaciente == null || detalhesBuscaPaciente.isVisible() == false) {
+            detalhesBuscaPaciente = new DetalhesConsultaPaciente();
             guias.Principal.centro.add(detalhesBuscaPaciente);
+            centraliza(detalhesBuscaPaciente);
             detalhesBuscaPaciente.setVisible(true);
-        }else{
+        } else {
             detalhesBuscaPaciente.toFront();
         }
     }
-    
 
+    //metodo para centralizar o JinternalFrame
+    public static void centraliza(JInternalFrame janela) {
+        // centraliza no JDesktopPane  
+//        int lDesk = JFprincipal.area.getWidth();     
+        int lDesk = guias.Principal.centro.getWidth();
+        int aDesk = guias.Principal.centro.getHeight();
+        int lIFrame = janela.getWidth();
+        int aIFrame = janela.getHeight();
+        
+        janela.setLocation(lDesk / 2 - lIFrame / 2, aDesk / 2 - aIFrame / 2);
+    }
+    
 }//Fecha Funcão

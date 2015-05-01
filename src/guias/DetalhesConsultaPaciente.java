@@ -31,50 +31,6 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
     public static String codConsulta;
     public static String nomePaciente;
 
-    public void cadastrarConsulta() throws SQLException {
-        con = ConectaBanco.conecta("bdclinica");
-        String sql = "Insert into consulta (medico_cod,paciente_cod,login_cod,data_consulta,horario,tipo_consulta,sintomas)"
-                + "values (?,?,?,?,?,?,?)";
-        try {
-            pst = con.prepareStatement(sql);//Statement.RETURN_GENERATED_KEYS);
-//            pst.setString(1, codMedicoConsulta.getText());
-//            pst.setString(2, codPacienteConuslta.getText());
-            pst.setString(3, lbCodOperador.getText());
-            pst.setString(4, dataConsulta.getDate().toString());
-            pst.setString(5, txtHoraAtendimentoStatus.getText());//getSelectedItem().toString());
-            pst.setString(6, cbTipoConuslta.getSelectedItem().toString());
-            pst.setString(7, AreaSintomasStatus.getText());
-
-            pst.execute();
-            //Metodo para recuperar o id de AutoIncremento de PK_PKF
-            //ResultSet rs = pst.getGeneratedKeys();
-            //rs.next();
-            //Metodo para Setar o campo recuperado em algum lugar da aplicação
-            //String cod = rs.getString(1);
-            //txtCodEnde.setText(cod);
-            //Metodo criado para trbalhar com troca de dados entre forms
-            //CadPacientes.codEndereco = txtCodEnde.getText();
-            //CadPacientes.txtCodEndereco.setText(txtCodEnde.getText());
-
-            pst.close();
-
-            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrado com sucesso - Aguardando Atendimento", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (SQLException error) {
-            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
-        }
-    }
-
-    public void LimparCampos() {
-        txtNomePacienteStatus.setText("");
-//        txtNomeMedicoConsulta.setText("");
-        txtHoraAtendimentoStatus.setText("");
-        AreaSintomasStatus.setText("");
-        dataConsulta.setDate(null);
-        cbTipoConuslta.setSelectedIndex(0);
-        txtNomePacienteStatus.requestFocus();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,30 +43,16 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtNomePacienteStatus = new javax.swing.JTextField();
-        txtHoraAtendimentoStatus = new javax.swing.JTextField();
-        cbTipoConuslta = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         AreaSintomasStatus = new javax.swing.JTextArea();
-        dataConsulta = new com.toedter.calendar.JDateChooser();
-        jButton4 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        lbNomeOperador = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        lbCodOperador = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        lbData = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        lbHora = new javax.swing.JLabel();
+        txtNomePacienteStatus = new javax.swing.JLabel();
+        lbTipoConsulta = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Cadastro de Consultas Médicas\n");
+        setTitle("Detalhes de Triagem de Pacientes\n");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -133,6 +75,7 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
+        jButton1.setPreferredSize(new java.awt.Dimension(90, 30));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -142,35 +85,11 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel1.setText("Nome Paciente:");
 
-        jLabel3.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jLabel3.setText("Data da Consulta:");
-
-        jLabel4.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        jLabel4.setText("Horario do Atendimento:");
-
         jLabel5.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel5.setText("Tipo de Consulta:");
 
         jLabel6.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         jLabel6.setText("Sintomas:");
-
-        txtNomePacienteStatus.setBackground(new java.awt.Color(204, 255, 255));
-        txtNomePacienteStatus.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtNomePacienteStatus.setForeground(new java.awt.Color(0, 0, 153));
-        txtNomePacienteStatus.setEnabled(false);
-
-        txtHoraAtendimentoStatus.setBackground(new java.awt.Color(204, 255, 255));
-        txtHoraAtendimentoStatus.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
-        txtHoraAtendimentoStatus.setForeground(new java.awt.Color(0, 0, 153));
-        txtHoraAtendimentoStatus.setEnabled(false);
-
-        cbTipoConuslta.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "<selecione>", "4 - Grave", "5 - Padrão", "6 - Urgente" }));
-        cbTipoConuslta.setEnabled(false);
-        cbTipoConuslta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbTipoConusltaActionPerformed(evt);
-            }
-        });
 
         AreaSintomasStatus.setEditable(false);
         AreaSintomasStatus.setBackground(new java.awt.Color(204, 255, 255));
@@ -180,84 +99,13 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         AreaSintomasStatus.setRows(5);
         jScrollPane1.setViewportView(AreaSintomasStatus);
 
-        dataConsulta.setBackground(new java.awt.Color(255, 255, 255));
-        dataConsulta.setEnabled(false);
+        txtNomePacienteStatus.setBackground(new java.awt.Color(204, 255, 255));
+        txtNomePacienteStatus.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
+        txtNomePacienteStatus.setForeground(new java.awt.Color(0, 0, 153));
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        jLabel7.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel7.setText("Atendente:");
-
-        lbNomeOperador.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lbNomeOperador.setForeground(new java.awt.Color(255, 51, 102));
-        lbNomeOperador.setText("Operador");
-
-        jLabel9.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel9.setText("Codigo:");
-
-        lbCodOperador.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lbCodOperador.setForeground(new java.awt.Color(255, 51, 102));
-        lbCodOperador.setText("CodigoOpe.");
-
-        jLabel11.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel11.setText("Data:");
-
-        lbData.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lbData.setForeground(new java.awt.Color(255, 51, 102));
-        lbData.setText("Data Local");
-
-        jLabel13.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel13.setText("Horario:");
-
-        lbHora.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lbHora.setForeground(new java.awt.Color(255, 51, 102));
-        lbHora.setText("Hora Local");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbNomeOperador)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbCodOperador)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbData)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbHora)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(lbNomeOperador)
-                    .addComponent(jLabel9)
-                    .addComponent(lbCodOperador)
-                    .addComponent(jLabel11)
-                    .addComponent(lbData)
-                    .addComponent(jLabel13)
-                    .addComponent(lbHora))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        lbTipoConsulta.setBackground(new java.awt.Color(204, 255, 255));
+        lbTipoConsulta.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        lbTipoConsulta.setForeground(new java.awt.Color(0, 0, 153));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -267,71 +115,49 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbTipoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 0, 0)
-                                .addComponent(txtHoraAtendimentoStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5)
-                                .addGap(0, 0, 0)
-                                .addComponent(cbTipoConuslta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 250, Short.MAX_VALUE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(198, 198, 198)
-                                .addComponent(jButton1))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomePacienteStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel1)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtNomePacienteStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {lbTipoConsulta, txtNomePacienteStatus});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtNomePacienteStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3))
-                    .addComponent(dataConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(txtNomePacienteStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(cbTipoConuslta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(txtHoraAtendimentoStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lbTipoConsulta))
+                .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lbTipoConsulta, txtNomePacienteStatus});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -354,41 +180,8 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AreaSintomasStatus.setText("");
-        txtNomePacienteStatus.setText("");
-        txtHoraAtendimentoStatus.setText("");
-        cbTipoConuslta.setSelectedItem(0);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void cbTipoConusltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoConusltaActionPerformed
-        switch (cbTipoConuslta.getSelectedIndex()) {
-            case 0:
-//                JOptionPane.showMessageDialog(null, "Case 0");
-                break;
-            case 1:
-//                JOptionPane.showMessageDialog(null, "Case 1");
-                AreaSintomasStatus.setText("4 - Grave\nConstantes vômitos,\nDores no corpo,\nManchas vermelhas na parte inferior do braço e febre alta.\n" + "");
-                break;
-            case 2:
-//                JOptionPane.showMessageDialog(null, "Case 2");
-                AreaSintomasStatus.setText("5 - Padrão\nDores na garganta,\nFebre alta,\nFraqueza quando caminha." + "");
-                break;
-            case 3:
-//                JOptionPane.showMessageDialog(null, "Case 3");
-                AreaSintomasStatus.setText("6 - Urgente\nDores no coração,\nManchas avermelhadas no braço direito,\nFalta de ar e aparenta pressão alta." + "");
-                break;
-        }
-    }//GEN-LAST:event_cbTipoConusltaActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            cadastrarConsulta();
-            LimparCampos();
-        } catch (SQLException ex) {
-            Logger.getLogger(DetalhesConsultaPaciente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 
@@ -397,27 +190,13 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTextArea AreaSintomasStatus;
-    public static javax.swing.JComboBox cbTipoConuslta;
-    public static com.toedter.calendar.JDateChooser dataConsulta;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    public static javax.swing.JLabel lbCodOperador;
-    public static javax.swing.JLabel lbData;
-    public static javax.swing.JLabel lbHora;
-    public static javax.swing.JLabel lbNomeOperador;
-    public static javax.swing.JTextField txtHoraAtendimentoStatus;
-    public static javax.swing.JTextField txtNomePacienteStatus;
+    public static javax.swing.JLabel lbTipoConsulta;
+    public static javax.swing.JLabel txtNomePacienteStatus;
     // End of variables declaration//GEN-END:variables
 }
