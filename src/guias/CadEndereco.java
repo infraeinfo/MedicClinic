@@ -22,7 +22,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author jhonatan
  */
 public class CadEndereco extends javax.swing.JInternalFrame {
-    
+
     Connection con;
     PreparedStatement pst;
     Statement stmt;
@@ -33,12 +33,12 @@ public class CadEndereco extends javax.swing.JInternalFrame {
      */
     public CadEndereco() {
         initComponents();
-        
+
     }
-    
+
     public static String codEnd;
     public static String nomePaciente;
-    
+
     public void cadastrarLogradouro() throws SQLException {
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into logradouro (cep,numero,bairro,cidade,uf,endereco)"
@@ -51,7 +51,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
             pst.setString(4, txtCidade.getText());
             pst.setString(5, cbUf.getSelectedItem().toString());
             pst.setString(6, txtEndereco.getText());
-            
+
             pst.execute();
             //Metodo para recuperar o id de AutoIncremento de PK_PKF
             ResultSet rs = pst.getGeneratedKeys();
@@ -62,16 +62,16 @@ public class CadEndereco extends javax.swing.JInternalFrame {
             //Metodo criado para trbalhar com troca de dados entre forms
             CadPacientes.codEndereco = txtCodEnde.getText();
             CadPacientes.txtCodEndereco.setText(txtCodEnde.getText());
-            
+
             pst.close();
-            
+
             JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Logradouro de Pacientes", JOptionPane.INFORMATION_MESSAGE);
-            
+
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
     }
-    
+
     public void LimparCampos() {
         txtBuscaCep.setText("");
         txtNumero.setText("");
@@ -80,36 +80,49 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         txtEndereco.setText("");
         cbUf.setSelectedIndex(0);
         txtBuscaCep.requestFocus();
-        
+
     }
-    
+
+    public void LimparCampos2() {
+        txtNumero.setText("");
+        txtBairro.setText("");
+        txtCidade.setText("");
+        txtEndereco.setText("");
+        cbUf.setSelectedIndex(0);
+        txtNumero.requestFocus();
+    }
+
     public void BuscaCep() throws SQLException {
         Connection con;
-        
         try {
             con = ConectaBanco.conecta("bdclinica");
 //        String sql = "select * from logradouro Where cep='" +txtBuscaCep+ "'";
             String sql = "select * from logradouro Where cep LIKE ?";
-            try (PreparedStatement pst = con.prepareStatement(sql)) 
-            
-            {
-                pst.setString(1, txtBuscaCep.getText());             
+            try (PreparedStatement pst = con.prepareStatement(sql)) {
+                pst.setString(1, txtBuscaCep.getText());
                 ResultSet rs = pst.executeQuery();
-                
-                while (rs.next()) {                    
+
+                if (rs.next())//Se encontrou algun registro prossegue
+                {
                     txtBuscaCep.setText(rs.getString("cep"));
                     txtEndereco.setText(rs.getString("endereco"));
                     txtNumero.requestFocus();
                     txtBairro.setText(rs.getString("bairro"));
                     txtCidade.setText(rs.getString("cidade"));
                     cbUf.setSelectedItem(rs.getString("uf"));
+                } else {
+                    int op = JOptionPane.showConfirmDialog(null, "CEP Não Cadastrado! Deseja cadastrar um novo CEP?");
+                    if (op == JOptionPane.YES_OPTION) {
+                        txtNumero.requestFocus();
+                        LimparCampos2();
+                    }
                 }
             }
-            
+
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
-        }        
-        
+        }
+
     }
 
     /**
@@ -189,6 +202,11 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         txtBuscaCep.setBackground(new java.awt.Color(204, 255, 255));
         txtBuscaCep.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtBuscaCep.setForeground(new java.awt.Color(0, 51, 153));
+        txtBuscaCep.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBuscaCepFocusLost(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +380,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         try {
             cadastrarLogradouro();
             LimparCampos();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(CadEndereco.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -380,13 +398,21 @@ public class CadEndereco extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        
+
         try {
             BuscaCep();
         } catch (SQLException ex) {
             Logger.getLogger(CadEndereco.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void txtBuscaCepFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscaCepFocusLost
+//        try {
+//            BuscaCep();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(CadEndereco.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_txtBuscaCepFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -440,7 +466,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
 //        }
         try {
             UIManager.setLookAndFeel("com.alee.laf.WebLookAndFeel");
-            
+
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Autenticacao.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -454,6 +480,6 @@ public class CadEndereco extends javax.swing.JInternalFrame {
 //        } 
         //</editor-fold>
         new CadEndereco().setVisible(true);
-        
+
     }
 }

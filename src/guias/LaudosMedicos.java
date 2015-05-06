@@ -36,6 +36,23 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
     // não esquecer de inicar as tabelas no construtro da classe.
     public DefaultTableModel dtm;
 
+    public void log() throws SQLException {
+        String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('Laudo Medico Consultas',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -436,7 +453,9 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
             pst.setString(3, lbCodConsulta.getText());
             //pst.executeUpdate();
             if (pst.executeUpdate() > 0) {
+                log();
                 JOptionPane.showMessageDialog(null, "Sucesso na Alteração!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Falha ao Alterar!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
             }

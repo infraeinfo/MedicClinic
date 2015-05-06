@@ -67,6 +67,22 @@ public class CadMedicos extends javax.swing.JInternalFrame {
         txtCRM.requestFocus();
     }
     
+        public void log() throws SQLException {
+        String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('Cadastrou Medico',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -322,6 +338,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
         try {
             cadastrarMedico();
             LimparCampos();
+            log();
         } catch (SQLException ex) {
             Logger.getLogger(CadMedicos.class.getName()).log(Level.SEVERE, null, ex);
         }

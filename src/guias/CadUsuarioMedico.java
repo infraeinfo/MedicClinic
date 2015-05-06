@@ -5,8 +5,6 @@ package guias;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import conexão.ConectaBanco;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -15,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,6 +23,9 @@ import javax.swing.JOptionPane;
  */
 public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
+    Connection con;
+    PreparedStatement pst;
+    
     /**
      * Creates new form CadUsuario
      */
@@ -30,58 +33,49 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         initComponents();
     }
     public static String nomeMedico;
-     public static String CRM;
-      public static String celular;
-    
-    
-    
-    
-    public void CadastrarUsuarioMedico(){
-         if(txtSenha.getText().equals(txtSenha2.getText()))
-        {      
-        Connection con;
-        try{
+    public static String CRM;
+    public static String celular;
+
+    public void CadastrarUsuarioMedico() {
+        if (txtSenha.getText().equals(txtSenha2.getText())) {
+            Connection con;
+            try {
 //        con=null;    
-        con = ConectaBanco.conecta("bdclinica");
-        String query = "INSERT INTO login (nome,telefone,cpf,usuario,senha,tipo) values (?,?,?,?,?,?)";
-        PreparedStatement pst = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
-        pst.setString(1,txtNome.getText());
-        pst.setString(2,txtTelefone.getText().trim());
-        pst.setString(3,txtCrm.getText());
-        pst.setString(4,txtUsuario.getText().trim());
-        pst.setString(5,txtSenha.getText());
-        pst.setString(6,cbSetor.getSelectedItem().toString());
+                con = ConectaBanco.conecta("bdclinica");
+                String query = "INSERT INTO login (nome,telefone,cpf,usuario,senha,tipo) values (?,?,?,?,?,?)";
+                PreparedStatement pst = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                pst.setString(1, txtNome.getText());
+                pst.setString(2, txtTelefone.getText().trim());
+                pst.setString(3, txtCrm.getText());
+                pst.setString(4, txtUsuario.getText().trim());
+                pst.setString(5, txtSenha.getText());
+                pst.setString(6, cbSetor.getSelectedItem().toString());
 //        pst.setString(6,grupo.getSelection().getActionCommand());  
-        
-        pst.execute();
-        //Metodo para recuperar o id de AutoIncremento de PK_PKF
-            ResultSet rs = pst.getGeneratedKeys();
-            rs.next();
-            //Metodo para Setar o campo recuperado em algum lugar da aplicação
-            String cod = rs.getString(1);
-            txtCodigoUsuario.setText(cod);
-            CadMedicos.codLogin=txtCodigoUsuario.getText();
-            CadMedicos.CodLogin.setText(txtCodigoUsuario.getText());
-        
-        
-        
-       JOptionPane.showMessageDialog(null,"Cadastrado com sucesso!");
-        limpar();
-      }catch(SQLException e)
-        {
-         JOptionPane.showMessageDialog
-         (null,"Erro SQL: "+e.getMessage());  
-        }
-        } 
-        else 
-        {
-          lbAlerta.setText("Senha inválida! Confirme a senha corretamente!");
-          txtSenha.setText("");
-          txtSenha2.setText("");
-          txtSenha.requestFocus();
+
+                pst.execute();
+                //Metodo para recuperar o id de AutoIncremento de PK_PKF
+                ResultSet rs = pst.getGeneratedKeys();
+                rs.next();
+                //Metodo para Setar o campo recuperado em algum lugar da aplicação
+                String cod = rs.getString(1);
+                txtCodigoUsuario.setText(cod);
+                CadMedicos.codLogin = txtCodigoUsuario.getText();
+                CadMedicos.CodLogin.setText(txtCodigoUsuario.getText());
+
+                JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!");
+                limpar();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Erro SQL: " + e.getMessage());
+            }
+        } else {
+            lbAlerta.setText("Senha inválida! Confirme a senha corretamente!");
+            txtSenha.setText("");
+            txtSenha2.setText("");
+            txtSenha.requestFocus();
         }
     }
-    public void  limpar(){
+
+    public void limpar() {
         txtCrm.setText("");
         txtNome.setText("");
         txtSenha.setText("");
@@ -91,6 +85,23 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         lbAlerta.setText("");
         txtNome.requestFocus();
         cbSetor.setSelectedIndex(0);
+    }
+
+    public void log() throws SQLException {
+        String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('Cadastrou usuario medico',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
     }
 
     /**
@@ -349,7 +360,7 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       this.dispose();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
@@ -357,12 +368,18 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtUsuarioFocusLost
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       CadastrarUsuarioMedico();
-       this.dispose();
+        
+        try {
+            CadastrarUsuarioMedico();
+            log();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadUsuarioMedico.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       limpar();
+        limpar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
@@ -383,39 +400,34 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 //        } catch (SQLException e) {
 //            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
 //        }
-        
+
     }//GEN-LAST:event_formInternalFrameOpened
 
     public void verificaUsurio() throws HeadlessException {
         Connection con;
-        try{
+        try {
 //            con=null;
             con = ConectaBanco.conecta("bdclinica");
             String query = "SELECT * FROM login WHERE usuario = ?";
             PreparedStatement pst = con.prepareStatement(query);
-            pst.setString(1,txtUsuario.getText());
+            pst.setString(1, txtUsuario.getText());
             ResultSet rs = pst.executeQuery();
-            if (rs.next())
-            {
+            if (rs.next()) {
                 lbAlerta.setText("Login indisponível! Escolha outro.");
                 lbAlerta.setForeground(Color.red);
                 txtUsuario.requestFocus();
                 txtUsuario.selectAll();
-            }else if(rs.next()==false && !txtUsuario.getText().trim().equals(""))
-            {
+            } else if (rs.next() == false && !txtUsuario.getText().trim().equals("")) {
                 lbAlerta.setText("Login disponível!");
                 lbAlerta.setForeground(Color.blue);
-            } else
-            {
+            } else {
                 lbAlerta.setText("Login não pode ficar em branco!");
                 lbAlerta.setForeground(Color.red);
                 txtUsuario.requestFocus();
                 txtUsuario.selectAll();
             }
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog
-                 (null,"Erro SQL: "+e.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro SQL: " + e.getMessage());
         }
     }
 
