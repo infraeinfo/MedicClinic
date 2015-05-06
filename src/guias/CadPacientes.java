@@ -80,7 +80,6 @@ public class CadPacientes extends javax.swing.JInternalFrame {
 
         try {
             con = ConectaBanco.conecta("bdclinica");
-//        String sql = "select * from logradouro Where cep='" +txtBuscaCep+ "'";
             String sql = "select * from paciente Where cpf LIKE ?";
             try (PreparedStatement pst = con.prepareStatement(sql)) {
                 pst.setString(1, txtCpf.getText());
@@ -136,6 +135,25 @@ public class CadPacientes extends javax.swing.JInternalFrame {
         }
     }
 
+    
+     public void log() throws SQLException {
+         String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('cadastro de Pacientes',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+    }
+    
+    
     public void LimparCampos() {
         txtNome.setText("");
         txtCpf.setText("");
@@ -487,6 +505,7 @@ public class CadPacientes extends javax.swing.JInternalFrame {
             //digite aqui a instrução se o campo for NÃO vazio e NÃO nulo. 
             try {
                 cadastrarPacientes();
+                log();
                 LimparCampos();
             } catch (SQLException ex) {
                 Logger.getLogger(CadPacientes.class.getName()).log(Level.SEVERE, null, ex);

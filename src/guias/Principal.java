@@ -5,11 +5,18 @@
  */
 package guias;
 
+import conexão.ConectaBanco;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -17,6 +24,9 @@ import javax.swing.Timer;
  * @author jhonatan
  */
 public class Principal extends javax.swing.JFrame {
+
+    Connection con;
+    PreparedStatement pst;
 
     /**
      * Creates new form Principal
@@ -28,6 +38,23 @@ public class Principal extends javax.swing.JFrame {
 
     public static String cod;
     public static String tipo;
+
+    public void log() throws SQLException {
+        String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('Saindo do Sistema',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,6 +70,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         btnCadPacientes = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
@@ -55,6 +83,8 @@ public class Principal extends javax.swing.JFrame {
         jToolBar2 = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
         lbOperador = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lbCod = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         jLabel4 = new javax.swing.JLabel();
         lbTipoFuncao = new javax.swing.JLabel();
@@ -81,6 +111,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
 
@@ -114,6 +145,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/hospital-simbolo1.png"))); // NOI18N
 
+        jButton1.setText("LogOff");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -122,20 +160,29 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 700, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton4});
+
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton4)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton4});
 
         javax.swing.GroupLayout centroLayout = new javax.swing.GroupLayout(centro);
         centro.setLayout(centroLayout);
@@ -251,6 +298,14 @@ public class Principal extends javax.swing.JFrame {
         lbOperador.setForeground(new java.awt.Color(255, 51, 102));
         lbOperador.setText("Usuario do Sistema");
         jToolBar2.add(lbOperador);
+
+        jLabel6.setForeground(new java.awt.Color(0, 153, 153));
+        jLabel6.setText("Cod:");
+        jToolBar2.add(jLabel6);
+
+        lbCod.setForeground(new java.awt.Color(255, 51, 102));
+        lbCod.setText("Cod...");
+        jToolBar2.add(lbCod);
         jToolBar2.add(jSeparator1);
 
         jLabel4.setForeground(new java.awt.Color(0, 153, 153));
@@ -408,6 +463,14 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem10);
 
+        jMenuItem7.setText("Historico de Altas");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem7);
+
         Arquivos.add(jMenu5);
 
         jMenuBar1.add(Arquivos);
@@ -463,6 +526,11 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            log();
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -518,6 +586,18 @@ public class Principal extends javax.swing.JFrame {
         DataHora();
     }//GEN-LAST:event_formWindowOpened
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        funcoes.funcao.info_laudos();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+        Autenticacao logOff = new Autenticacao();
+        logOff.setVisible(true);
+        logOff.show();
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void DataHora() {
         //Mostra a data Local
         Date dataSistema = new Date();
@@ -568,12 +648,14 @@ public class Principal extends javax.swing.JFrame {
     public static javax.swing.JButton btnMedico;
     public static javax.swing.JButton btnStatus;
     public static javax.swing.JDesktopPane centro;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
@@ -587,6 +669,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
@@ -601,6 +684,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    public static javax.swing.JLabel lbCod;
     public static javax.swing.JLabel lbData;
     private javax.swing.JLabel lbHora;
     public static javax.swing.JLabel lbOperador;

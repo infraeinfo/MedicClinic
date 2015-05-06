@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +21,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Jhonatan
  */
 public class LaudosMedicos extends javax.swing.JInternalFrame {
+
+    Connection con;
+    PreparedStatement pst;
 
     /**
      * Creates new form LaudosMedicos
@@ -42,10 +47,10 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         cbPreLaudos = new javax.swing.JComboBox();
-        jButton4 = new javax.swing.JButton();
+        btnSalvarLaudo = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnFecharLaudos = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -59,6 +64,8 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtNomeMedicoLaudos = new javax.swing.JTextField();
+        lbCodConsulta = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -91,16 +98,21 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
+        btnSalvarLaudo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
+        btnSalvarLaudo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarLaudoActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnFecharLaudos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
+        btnFecharLaudos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnFecharLaudosActionPerformed(evt);
             }
         });
 
@@ -128,11 +140,11 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Paciente", "Horario", "Triagem", "Sintomas"
+                "Paciente", "Horario", "Triagem", "Sintomas", "cod Paciente"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -146,6 +158,7 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         });
         jScrollPane3.setViewportView(tabPacienteLaudos);
         if (tabPacienteLaudos.getColumnModel().getColumnCount() > 0) {
+            tabPacienteLaudos.getColumnModel().getColumn(0).setResizable(false);
             tabPacienteLaudos.getColumnModel().getColumn(0).setPreferredWidth(50);
             tabPacienteLaudos.getColumnModel().getColumn(1).setResizable(false);
             tabPacienteLaudos.getColumnModel().getColumn(1).setPreferredWidth(10);
@@ -154,6 +167,9 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
             tabPacienteLaudos.getColumnModel().getColumn(3).setMinWidth(0);
             tabPacienteLaudos.getColumnModel().getColumn(3).setPreferredWidth(0);
             tabPacienteLaudos.getColumnModel().getColumn(3).setMaxWidth(0);
+            tabPacienteLaudos.getColumnModel().getColumn(4).setMinWidth(0);
+            tabPacienteLaudos.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tabPacienteLaudos.getColumnModel().getColumn(4).setMaxWidth(0);
         }
 
         txtAreaSintomasLaudo.setBackground(new java.awt.Color(204, 255, 255));
@@ -176,6 +192,11 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
             }
         });
 
+        lbCodConsulta.setBackground(new java.awt.Color(255, 255, 255));
+        lbCodConsulta.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        lbCodConsulta.setForeground(new java.awt.Color(255, 255, 255));
+        lbCodConsulta.setText("codCliente");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -187,7 +208,9 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(lbCodConsulta))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1))
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -211,10 +234,20 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbCodConsulta))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        jButton1.setText("Historico de Altas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,25 +261,26 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 65, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSalvarLaudo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(btnFecharLaudos))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbPreLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbPreLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnFecharLaudos, btnSalvarLaudo, jButton2, jButton3});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,20 +288,21 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
+                        .addGap(56, 56, 56)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(cbPreLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbPreLaudos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(btnFecharLaudos)
                             .addComponent(jButton2)
                             .addComponent(jButton3)
-                            .addComponent(jButton4)))
+                            .addComponent(btnSalvarLaudo)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -292,35 +327,42 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnFecharLaudosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharLaudosActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnFecharLaudosActionPerformed
 
     private void btnBuscaPacienteLaudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscaPacienteLaudoActionPerformed
+        atualizaTabela();
+    }//GEN-LAST:event_btnBuscaPacienteLaudoActionPerformed
+
+    public void atualizaTabela() throws HeadlessException {
         dtm.setRowCount(0);
-        Connection con;
+//        Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome from paciente p , consulta c, medico m where  c.medico_cod = m.cod and c.paciente_cod = p.cod and m.nome like ? ";
+            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta, m.nome, c.idconsulta "
+                    + "from paciente p , consulta c, medico m "
+                    + "where c.medico_cod = m.cod "
+                    + "and c.paciente_cod = p.cod "
+                    + "and tipo_consulta<>'alta'"
+                    + "and m.nome like ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtNomeMedicoLaudos.getText() + "%");
 
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Object Linha[] = {rs.getString("p.Nome"), //false, false};
-                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                    rs.getString("c.horario"),
+                    rs.getString("c.tipo_consulta"),
+                    rs.getString("c.sintomas"),
+                    rs.getString("c.idconsulta"), false, false};
                 dtm.addRow(Linha);
-
-//                int linha_selecionada = tabPacienteLaudos.getSelectedRow();
-//                txtAreaSintomasLaudo.setText(rs.getString("c.sintomas"));
             }
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
-
-
-    }//GEN-LAST:event_btnBuscaPacienteLaudoActionPerformed
+    }
 
     private void cbPreLaudosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPreLaudosActionPerformed
         switch (cbPreLaudos.getSelectedIndex()) {
@@ -348,34 +390,34 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void tabPacienteLaudosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabPacienteLaudosMouseClicked
-////        ListaTabPalacienteLaudo();
-//        int linha_selecionada = tabPacienteLaudos.getSelectedRow();
-////        tabPacienteLaudos.getValueAt(linha_selecionada, 3).toString();
-//        txtAreaSintomasLaudo.setText(""+tabPacienteLaudos.getValueAt(linha_selecionada, 3));
-           int linha_selecionada = tabPacienteLaudos.getSelectedRow();
-            tabPacienteLaudos.getValueAt(linha_selecionada, 3).toString();
-            txtAreaSintomasLaudo.setText(""+tabPacienteLaudos.getValueAt(linha_selecionada, 3));
+        int linha_selecionada = tabPacienteLaudos.getSelectedRow();
+        tabPacienteLaudos.getValueAt(linha_selecionada, 3).toString();
+        txtAreaSintomasLaudo.setText("" + tabPacienteLaudos.getValueAt(linha_selecionada, 3));
+        tabPacienteLaudos.getValueAt(linha_selecionada, 4).toString();
+        lbCodConsulta.setText("" + tabPacienteLaudos.getValueAt(linha_selecionada, 4));
     }//GEN-LAST:event_tabPacienteLaudosMouseClicked
 
     public void ListaTabPalacienteLaudo() throws HeadlessException {
-        //        dtm.setRowCount(0);
-        Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome from paciente p , consulta c, medico m where  c.medico_cod = m.cod and c.paciente_cod = p.cod and m.nome like ? ";
+            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome,c.idconsulta "
+                    + "from paciente p , consulta c, medico m "
+                    + "where  c.medico_cod = m.cod "
+                    + "and c.paciente_cod = p.cod "
+                    + "and tipo_consulta<>'alta'"
+                    + "and m.nome like ? ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, Principal.lbOperador.getText() + "%");
 
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Object Linha[] = {rs.getString("p.Nome"), //false, false};
-                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), rs.getString("c.sintomas"), false, false};
+                    rs.getString("c.horario"),
+                    rs.getString("c.tipo_consulta"),
+                    rs.getString("c.sintomas"),
+                    rs.getString("c.idconsulta"), false, false};
                 dtm.addRow(Linha);
             }
-            
-//            int linha_selecionada = tabPacienteLaudos.getSelectedRow();
-//            tabPacienteLaudos.getValueAt(linha_selecionada, 3).toString();
-//            txtAreaSintomasLaudo.setText(rs.getString("c.sintomas"));
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
@@ -385,14 +427,39 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNomeMedicoLaudosActionPerformed
 
+    private void btnSalvarLaudoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarLaudoActionPerformed
+        String sql = "update consulta set tipo_consulta=?,sintomas=? where idconsulta=?";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, cbPreLaudos.getSelectedItem().toString());
+            pst.setString(2, txtAreaLaudos.getText());
+            pst.setString(3, lbCodConsulta.getText());
+            //pst.executeUpdate();
+            if (pst.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Sucesso na Alteração!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Falha ao Alterar!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+//        atualizaTabela();
+        ListaTabPalacienteLaudo();
+    }//GEN-LAST:event_btnSalvarLaudoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        funcoes.funcao.info_laudos();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscaPacienteLaudo;
+    private javax.swing.JButton btnFecharLaudos;
+    private javax.swing.JButton btnSalvarLaudo;
     private javax.swing.JComboBox cbPreLaudos;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
@@ -402,6 +469,7 @@ public class LaudosMedicos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    public static javax.swing.JLabel lbCodConsulta;
     private javax.swing.JTable tabPacienteLaudos;
     private javax.swing.JTextArea txtAreaLaudos;
     private javax.swing.JTextArea txtAreaSintomasLaudo;

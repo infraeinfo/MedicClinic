@@ -95,11 +95,11 @@ public class Status extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "PACIENTES", "MEDICOS", "HORARIO", "TRIAGEM"
+                "PACIENTES", "MEDICOS", "HORARIO", "TRIAGEM", "Cod Consulta", "Cod Medico"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -113,6 +113,12 @@ public class Status extends javax.swing.JInternalFrame {
             tabelaBuscaStatus.getColumnModel().getColumn(2).setPreferredWidth(10);
             tabelaBuscaStatus.getColumnModel().getColumn(3).setResizable(false);
             tabelaBuscaStatus.getColumnModel().getColumn(3).setPreferredWidth(10);
+            tabelaBuscaStatus.getColumnModel().getColumn(4).setMinWidth(0);
+            tabelaBuscaStatus.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tabelaBuscaStatus.getColumnModel().getColumn(4).setMaxWidth(0);
+            tabelaBuscaStatus.getColumnModel().getColumn(5).setMinWidth(0);
+            tabelaBuscaStatus.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tabelaBuscaStatus.getColumnModel().getColumn(5).setMaxWidth(0);
         }
 
         btnFecharJanela.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
@@ -162,9 +168,9 @@ public class Status extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFecharJanela)
-                    .addComponent(btnDetalhePacientes))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDetalhePacientes)
+                    .addComponent(btnFecharJanela))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -198,18 +204,25 @@ public class Status extends javax.swing.JInternalFrame {
         Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-//            String sql = "select p.Nome, m.nome from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?";
-//            String sql = "SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod=medico.cod LIKE ?";
-//            String sql ="SELECT * FROM paciente INNER JOIN consulta ON consulta.paciente_cod=paciente.cod"; //"SELECT * FROM paciente,medico,consulta where consulta.paciente_cod = paciente.cod and consulta.medico_cod = medico.cod LIKE ?";
-            String sql = "select p.Nome, m.nome, c.horario, c.tipo_consulta from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?  ";
+            String sql = "select p.Nome,c.idconsulta, m.nome, c.horario, c.medico_cod,c.tipo_consulta from "
+                    + "paciente p, medico m, consulta c "
+                    + "Where c.medico_cod = m.cod "
+                    + "and c.paciente_cod = p.cod  "
+                    + "and tipo_consulta<>'alta' "
+                    + "and p.Nome LIKE ?  ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaStatus.getText() + "%");
 
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
-                Object Linha[] = {rs.getString("p.Nome"), rs.getString("m.nome"), //false, false};
-                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                Object Linha[] = {
+                    rs.getString("p.Nome"),
+                    rs.getString("m.nome"), //false, false};
+                    rs.getString("c.horario"),
+                    rs.getString("c.tipo_consulta"),// false, false};
+                    rs.getString("c.idconsulta"),
+                    rs.getString("c.medico_cod"), false, false};
                 dtm.addRow(Linha);
             }
 
@@ -224,10 +237,18 @@ public class Status extends javax.swing.JInternalFrame {
         int linha_selecionada = tabelaBuscaStatus.getSelectedRow();
         DetalhesConsultaPaciente.txtNomePacienteStatus.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString());
         nome = tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString();
+        DetalhesConsultaPaciente.txtNomeMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 1).toString());
+        DetalhesConsultaPaciente.cbTipoConuslta.setSelectedItem(tabelaBuscaStatus.getValueAt(linha_selecionada, 3).toString());
+        DetalhesConsultaPaciente.lbIdConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 4).toString());
+        DetalhesConsultaPaciente.codMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 5).toString());
         Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from paciente p , consulta c where c.paciente_cod=p.cod and p.nome LIKE ?";
+            String sql = "select p.nome,c.idconsulta, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from"
+                    + " paciente p , consulta c "
+                    + "where c.paciente_cod=p.cod "
+                    + "and tipo_consulta<>'alta' "
+                    + "and p.nome LIKE ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText() + "%");
 
@@ -249,15 +270,25 @@ public class Status extends javax.swing.JInternalFrame {
         Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-            String sql = "select p.Nome, m.nome, c.horario, c.tipo_consulta from paciente p, medico m, consulta c Where c.medico_cod = m.cod and c.paciente_cod = p.cod and p.Nome LIKE ?  ";
+            String sql = "select p.Nome,c.idconsulta, m.nome, c.horario,c.medico_cod, c.tipo_consulta from "
+                    + "paciente p, medico m, consulta c "
+                    + "Where c.medico_cod = m.cod "
+                    + "and c.paciente_cod = p.cod "
+                    + "and tipo_consulta<>'alta' "
+                    + "and p.Nome LIKE ?  ";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaStatus.getText() + "%");
 
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
-                Object Linha[] = {rs.getString("p.Nome"), rs.getString("m.nome"), //false, false};
-                    rs.getString("c.horario"), rs.getString("c.tipo_consulta"), false, false};
+                Object Linha[] = {
+                    rs.getString("p.Nome"),
+                    rs.getString("m.nome"), //false, false};
+                    rs.getString("c.horario"),
+                    rs.getString("c.tipo_consulta"),
+                    rs.getString("c.idconsulta"),
+                    rs.getString("c.medico_cod"), false, false};
                 dtm.addRow(Linha);
             }
 

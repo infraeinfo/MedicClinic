@@ -5,6 +5,15 @@
  */
 package guias;
 
+import conexão.ConectaBanco;
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Jhonatan
@@ -16,7 +25,11 @@ public class LogsSistema extends javax.swing.JInternalFrame {
      */
     public LogsSistema() {
         initComponents();
+        dtm = (DefaultTableModel) tabLogSistema.getModel();
     }
+    //Sempre necessario para manipular tabelas com registros criar uma default table nome
+    // não esquecer de inicar as tabelas no construtro da classe.
+    public DefaultTableModel dtm;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,7 +48,7 @@ public class LogsSistema extends javax.swing.JInternalFrame {
         jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabLogSistema = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
@@ -43,6 +56,23 @@ public class LogsSistema extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setTitle(".::Logs Do Sistema Usuarios::.");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
@@ -63,18 +93,31 @@ public class LogsSistema extends javax.swing.JInternalFrame {
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783471_icon-ios7-search-strong-16.png"))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabLogSistema.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Usuario", "Ação", "Data e Hora"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabLogSistema);
+        if (tabLogSistema.getColumnModel().getColumnCount() > 0) {
+            tabLogSistema.getColumnModel().getColumn(0).setResizable(false);
+            tabLogSistema.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tabLogSistema.getColumnModel().getColumn(1).setResizable(false);
+            tabLogSistema.getColumnModel().getColumn(1).setPreferredWidth(10);
+            tabLogSistema.getColumnModel().getColumn(2).setResizable(false);
+            tabLogSistema.getColumnModel().getColumn(2).setPreferredWidth(10);
+        }
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -84,6 +127,11 @@ public class LogsSistema extends javax.swing.JInternalFrame {
         });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,10 +169,10 @@ public class LogsSistema extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,6 +210,38 @@ public class LogsSistema extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        log();
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        log();       
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    public void log() throws HeadlessException {
+        dtm.setRowCount(0);
+        Connection con;
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "select * from log Where especialidade LIKE ?";
+//            String sql = "select u.nome ,l.acao,l.data from login u, log l where l.login_cod=u.cod";
+            String sql ="select u.nome,l.data,l.acao from login u, log l where l.login_cod=u.cod";
+            PreparedStatement pst = con.prepareStatement(sql);
+//            pst.setString(1, txtBuscaMedico.getText() + "%");
+            
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
+                Object Linha[] = {rs.getString("u.nome"), rs.getString("l.acao"),
+                    rs.getString("l.data"), false, false};
+                dtm.addRow(Linha);
+            }
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -172,8 +252,8 @@ public class LogsSistema extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable tabLogSistema;
     // End of variables declaration//GEN-END:variables
 }

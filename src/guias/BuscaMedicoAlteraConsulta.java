@@ -17,12 +17,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author jhonatan
  */
-public class BuscaMedico extends javax.swing.JInternalFrame {
+public class BuscaMedicoAlteraConsulta extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form BuscaMedico
      */
-    public BuscaMedico() {
+    public BuscaMedicoAlteraConsulta() {
         initComponents();
         dtm = (DefaultTableModel) tabelaBuscaMedico.getModel();
     }
@@ -218,10 +218,10 @@ public class BuscaMedico extends javax.swing.JInternalFrame {
 
     private void tabelaBuscaMedicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaBuscaMedicoMouseClicked
         int linha_selecionada = tabelaBuscaMedico.getSelectedRow();
-        CadConsulta.codMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 0).toString());
-        CadConsulta.txtNomeMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 2).toString());
-//        DetalhesConsultaPaciente.txtNomeMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 2).toString());
-//        DetalhesConsultaPaciente.lbIdConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 0).toString());
+//        CadConsulta.codMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 0).toString());
+//        CadConsulta.txtNomeMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 2).toString());
+        DetalhesConsultaPaciente.txtNomeMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 2).toString());
+        DetalhesConsultaPaciente.codMedicoConsulta.setText(tabelaBuscaMedico.getValueAt(linha_selecionada, 0).toString());
         this.dispose();
     }//GEN-LAST:event_tabelaBuscaMedicoMouseClicked
 

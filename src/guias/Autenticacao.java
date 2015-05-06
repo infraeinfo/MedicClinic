@@ -30,13 +30,16 @@ import javax.swing.Timer;
  */
 public class Autenticacao extends javax.swing.JFrame {
 
+    Connection con;
+    PreparedStatement pst;
+
     /**
      * Creates new form Autenticacao
      */
     public Autenticacao() {
         initComponents();
     }
-    public Connection con;
+//    public Connection con;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -280,7 +283,14 @@ public class Autenticacao extends javax.swing.JFrame {
 
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
         con = null;
-        Logar();
+       
+        try {
+             Logar();
+            log();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Autenticacao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnLogarActionPerformed
 
     private void txtSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyPressed
@@ -290,7 +300,13 @@ public class Autenticacao extends javax.swing.JFrame {
     private void txtSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyReleased
         if (evt.getKeyChar() == KeyEvent.VK_ENTER) //se pressionou a tecla enter
         {
-            Logar();
+            
+            try {
+                Logar();
+                log();
+            } catch (SQLException ex) {
+                Logger.getLogger(Autenticacao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_txtSenhaKeyReleased
 
@@ -313,12 +329,28 @@ public class Autenticacao extends javax.swing.JFrame {
 
     }
 
+    public void log() throws SQLException {
+        String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('Entrou no Sistema',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
+    }
+
     public void Logar() throws HeadlessException {
         try {
             con = ConectaBanco.conecta("bdclinica");
             String query = "SELECT * FROM login WHERE usuario=? AND senha=?";
-//            Statement.RETURN_GENERATED_KEYS);
-//             Statement.NO_GENERATED_KEYS;
+
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, txtUsuario.getText());
             pst.setString(2, txtSenha.getText());
@@ -328,6 +360,7 @@ public class Autenticacao extends javax.swing.JFrame {
             {
                 funcoes.funcao.telaPrincipal();
                 Principal.cod = rs.getString("cod");
+                Principal.lbCod.setText(rs.getString("cod"));
                 Principal.lbOperador.setText(rs.getString("nome"));
                 Principal.tipo = rs.getString("tipo");
                 Principal.lbTipoFuncao.setText(rs.getString("tipo"));
