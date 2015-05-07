@@ -41,7 +41,7 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnFecharDetalhesConsulta = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -49,7 +49,7 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         AreaSintomasStatus = new javax.swing.JTextArea();
         txtNomePacienteStatus = new javax.swing.JLabel();
         lbTipoConsulta = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnAlteraConsulta = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtNomeMedicoConsulta = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
@@ -82,11 +82,11 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
-        jButton1.setPreferredSize(new java.awt.Dimension(90, 30));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnFecharDetalhesConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
+        btnFecharDetalhesConsulta.setPreferredSize(new java.awt.Dimension(90, 30));
+        btnFecharDetalhesConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnFecharDetalhesConsultaActionPerformed(evt);
             }
         });
 
@@ -115,11 +115,11 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         lbTipoConsulta.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
         lbTipoConsulta.setForeground(new java.awt.Color(0, 0, 153));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
-        jButton2.setText("Alterar Consulta");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAlteraConsulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
+        btnAlteraConsulta.setText("Alterar Consulta");
+        btnAlteraConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAlteraConsultaActionPerformed(evt);
             }
         });
 
@@ -164,9 +164,9 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btnAlteraConsulta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnFecharDetalhesConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -237,14 +237,14 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(btnFecharDetalhesConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAlteraConsulta))
                 .addContainerGap())
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lbTipoConsulta, txtNomePacienteStatus});
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAlteraConsulta, btnFecharDetalhesConsulta});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -266,9 +266,9 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnFecharDetalhesConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharDetalhesConsultaActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnFecharDetalhesConsultaActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 
@@ -281,25 +281,21 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
     private void cbTipoConusltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoConusltaActionPerformed
         switch (cbTipoConuslta.getSelectedIndex()) {
             case 0:
-                //                JOptionPane.showMessageDialog(null, "Case 0");
+                
                 break;
             case 1:
-                //                JOptionPane.showMessageDialog(null, "Case 1");
                 AreaSintomasStatus.setText("4 - Grave\nConstantes vômitos,\nDores no corpo,\nManchas vermelhas na parte inferior do braço e febre alta.\n" + "");
                 break;
             case 2:
-                //                JOptionPane.showMessageDialog(null, "Case 2");
                 AreaSintomasStatus.setText("5 - Padrão\nDores na garganta,\nFebre alta,\nFraqueza quando caminha." + "");
                 break;
             case 3:
-                //                JOptionPane.showMessageDialog(null, "Case 3");
                 AreaSintomasStatus.setText("6 - Urgente\nDores no coração,\nManchas avermelhadas no braço direito,\nFalta de ar e aparenta pressão alta." + "");
                 break;
         }
     }//GEN-LAST:event_cbTipoConusltaActionPerformed
 
         public void log() throws SQLException {
-//        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Alterou Consulta',current_timestamp,?)";
@@ -308,49 +304,40 @@ public class DetalhesConsultaPaciente extends javax.swing.JInternalFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
     }
     
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAlteraConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlteraConsultaActionPerformed
         try {
             con = ConectaBanco.conecta("bdclinica");
-
             String sql = "update consulta set medico_cod=?,tipo_consulta=?,sintomas=? where idconsulta=?";
-
             pst = con.prepareStatement(sql);
             pst.setString(1, codMedicoConsulta.getText());
             pst.setString(2, cbTipoConuslta.getSelectedItem().toString());
             pst.setString(3, AreaSintomasStatus.getText());
-            pst.setString(4, lbIdConsulta.getText());
-            
+            pst.setString(4, lbIdConsulta.getText());            
             if (pst.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Sucesso na Alteração!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
                 log();
-//                return "Alterado com sucesso.";
-//                return JOptionPane.showMessageDialog(null, "Sucesso na Alteração!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Falha ao Alterar!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-//                return "Erro ao alterar";
-//                JOptionPane.showMessageDialog(null, "Falha ao Alterar!", "Alterar Pacientes", JOptionPane.INFORMATION_MESSAGE);
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(DetalhesConsultaPaciente.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnAlteraConsultaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTextArea AreaSintomasStatus;
+    private javax.swing.JButton btnAlteraConsulta;
+    private javax.swing.JButton btnFecharDetalhesConsulta;
     public static javax.swing.JComboBox cbTipoConuslta;
     public static javax.swing.JLabel codMedicoConsulta;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

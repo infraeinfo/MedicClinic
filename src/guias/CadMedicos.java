@@ -8,6 +8,7 @@ package guias;
 import conexão.ConectaBanco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,12 +22,12 @@ public class CadMedicos extends javax.swing.JInternalFrame {
 
     Connection con;
     PreparedStatement pst;
+    ResultSet rs;
 
     /**
      * Creates new form CadMedicos
      */
     public CadMedicos() {
-
         initComponents();
     }
     public static String codLogin;
@@ -68,7 +69,6 @@ public class CadMedicos extends javax.swing.JInternalFrame {
     }
     
         public void log() throws SQLException {
-        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Cadastrou Novo Medico',current_timestamp,?)";
@@ -77,8 +77,6 @@ public class CadMedicos extends javax.swing.JInternalFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -111,7 +109,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
         cbAtendimentoMedico = new javax.swing.JComboBox();
         btnLimparCadMedico = new javax.swing.JButton();
         btnSalvarCadMedico = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnCadastrarUsuario = new javax.swing.JButton();
         CodLogin = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
@@ -193,10 +191,10 @@ public class CadMedicos extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setText("Cadastrar Usuario e Senha");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCadastrarUsuario.setText("Cadastrar Usuario e Senha");
+        btnCadastrarUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCadastrarUsuarioActionPerformed(evt);
             }
         });
 
@@ -256,7 +254,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
                             .addComponent(txtEmailMedico, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE))
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
+                            .addComponent(btnCadastrarUsuario)
                             .addComponent(CodLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
@@ -293,7 +291,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtEspecialidadeMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnCadastrarUsuario))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
@@ -341,7 +339,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnSalvarCadMedicoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarUsuarioActionPerformed
         funcoes.funcao.cad_usario_medico();
         CadUsuarioMedico.txtUsuario.requestFocus();
         CadUsuarioMedico.nomeMedico = txtNomeMedico.getText();
@@ -352,7 +350,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
         CadUsuarioMedico.txtTelefone.setText(txtCelularMedico.getText());
                 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCadastrarUsuarioActionPerformed
 
     private void btnLimparCadMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparCadMedicoActionPerformed
        LimparCampos();
@@ -361,11 +359,11 @@ public class CadMedicos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel CodLogin;
+    private javax.swing.JButton btnCadastrarUsuario;
     private javax.swing.JButton btnFecharCadMedico;
     private javax.swing.JButton btnLimparCadMedico;
     private javax.swing.JButton btnSalvarCadMedico;
     private javax.swing.JComboBox cbAtendimentoMedico;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

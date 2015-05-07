@@ -23,12 +23,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Status extends javax.swing.JInternalFrame {
 
+    Connection con;
+    PreparedStatement pst;
+    ResultSet rs;
+
     /**
      * Creates new form Status
      */
     public Status() {
         initComponents();
         dtm = (DefaultTableModel) tabelaBuscaStatus.getModel();
+        btnDetalhePacientes.setVisible(false);
     }
     //Sempre necessario para manipular tabelas com registros criar uma default table nome
     // não esquecer de inicar as tabelas no construtro da classe.
@@ -51,6 +56,7 @@ public class Status extends javax.swing.JInternalFrame {
         tabelaBuscaStatus = new javax.swing.JTable();
         btnFecharJanela = new javax.swing.JButton();
         btnDetalhePacientes = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -106,6 +112,11 @@ public class Status extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaBuscaStatus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaBuscaStatusMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaBuscaStatus);
         if (tabelaBuscaStatus.getColumnModel().getColumnCount() > 0) {
             tabelaBuscaStatus.getColumnModel().getColumn(0).setPreferredWidth(200);
@@ -135,26 +146,35 @@ public class Status extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("SELECIONE UM PACIENTE PARA MAIS DETALHES!");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscarPacientes)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(256, 256, 256)
-                .addComponent(btnFecharJanela, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnDetalhePacientes)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtBuscaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBuscarPacientes)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFecharJanela, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(btnDetalhePacientes)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -168,9 +188,10 @@ public class Status extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDetalhePacientes)
-                    .addComponent(btnFecharJanela))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnDetalhePacientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFecharJanela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -199,9 +220,7 @@ public class Status extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnFecharJanelaActionPerformed
 
     private void btnBuscarPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPacientesActionPerformed
-
         dtm.setRowCount(0);
-        Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
             String sql = "select p.Nome,c.idconsulta, m.nome, c.horario, c.medico_cod,c.tipo_consulta from "
@@ -210,64 +229,61 @@ public class Status extends javax.swing.JInternalFrame {
                     + "and c.paciente_cod = p.cod  "
                     + "and tipo_consulta<>'alta' "
                     + "and p.Nome LIKE ?  ";
-            PreparedStatement pst = con.prepareStatement(sql);
+            pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaStatus.getText() + "%");
-
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
                 Object Linha[] = {
                     rs.getString("p.Nome"),
-                    rs.getString("m.nome"), //false, false};
+                    rs.getString("m.nome"),
                     rs.getString("c.horario"),
                     rs.getString("c.tipo_consulta"),// false, false};
                     rs.getString("c.idconsulta"),
                     rs.getString("c.medico_cod"), false, false};
                 dtm.addRow(Linha);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
     }//GEN-LAST:event_btnBuscarPacientesActionPerformed
 
     private void btnDetalhePacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetalhePacientesActionPerformed
-        String nome, cod;
-        funcoes.funcao.detalhes_paciente_Status();
-        int linha_selecionada = tabelaBuscaStatus.getSelectedRow();
-        DetalhesConsultaPaciente.txtNomePacienteStatus.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString());
-        nome = tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString();
-        DetalhesConsultaPaciente.txtNomeMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 1).toString());
-        DetalhesConsultaPaciente.cbTipoConuslta.setSelectedItem(tabelaBuscaStatus.getValueAt(linha_selecionada, 3).toString());
-        DetalhesConsultaPaciente.lbIdConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 4).toString());
-        DetalhesConsultaPaciente.codMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 5).toString());
-        Connection con;
-        try {
-            con = ConectaBanco.conecta("bdclinica");
-            String sql = "select p.nome,c.idconsulta, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from"
-                    + " paciente p , consulta c "
-                    + "where c.paciente_cod=p.cod "
-                    + "and tipo_consulta<>'alta' "
-                    + "and p.nome LIKE ?";
-            PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText() + "%");
-
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                AreaSintomasStatus.setText(rs.getString("c.sintomas"));
-                DetalhesConsultaPaciente.lbTipoConsulta.setText(rs.getString("c.tipo_consulta"));
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
-        }
-
+//        String nome, cod;
+//        funcoes.funcao.detalhes_paciente_Status();
+//        int linha_selecionada = tabelaBuscaStatus.getSelectedRow();
+//        DetalhesConsultaPaciente.txtNomePacienteStatus.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString());
+//        nome = tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString();
+//        DetalhesConsultaPaciente.txtNomeMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 1).toString());
+//        DetalhesConsultaPaciente.cbTipoConuslta.setSelectedItem(tabelaBuscaStatus.getValueAt(linha_selecionada, 3).toString());
+//        DetalhesConsultaPaciente.lbIdConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 4).toString());
+//        DetalhesConsultaPaciente.codMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 5).toString());
+//        Connection con;
+//        try {
+//            con = ConectaBanco.conecta("bdclinica");
+//            String sql = "select p.nome,c.idconsulta, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from"
+//                    + " paciente p , consulta c "
+//                    + "where c.paciente_cod=p.cod "
+//                    + "and tipo_consulta<>'alta' "
+//                    + "and p.nome LIKE ?";
+//            PreparedStatement pst = con.prepareStatement(sql);
+//            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText() + "%");
+//
+//            ResultSet rs = pst.executeQuery();
+//            while (rs.next()) {
+//                AreaSintomasStatus.setText(rs.getString("c.sintomas"));
+//                DetalhesConsultaPaciente.lbTipoConsulta.setText(rs.getString("c.tipo_consulta"));
+//            }
+//
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+//        }
+//
 
     }//GEN-LAST:event_btnDetalhePacientesActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         dtm.setRowCount(0);
-        Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
             String sql = "select p.Nome,c.idconsulta, m.nome, c.horario,c.medico_cod, c.tipo_consulta from "
@@ -276,10 +292,9 @@ public class Status extends javax.swing.JInternalFrame {
                     + "and c.paciente_cod = p.cod "
                     + "and tipo_consulta<>'alta' "
                     + "and p.Nome LIKE ?  ";
-            PreparedStatement pst = con.prepareStatement(sql);
+            pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaStatus.getText() + "%");
-
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             while (rs.next()) {
                 //Os nome dos Objetos rs.getStrin("")= são iguais as tabelaas criadas
                 Object Linha[] = {
@@ -291,18 +306,48 @@ public class Status extends javax.swing.JInternalFrame {
                     rs.getString("c.medico_cod"), false, false};
                 dtm.addRow(Linha);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
     }//GEN-LAST:event_formInternalFrameOpened
 
+    private void tabelaBuscaStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaBuscaStatusMouseClicked
+        btnDetalhePacientes.setEnabled(true);
+        String nome, cod;
+        funcoes.funcao.detalhes_paciente_Status();
+        int linha_selecionada = tabelaBuscaStatus.getSelectedRow();
+        DetalhesConsultaPaciente.txtNomePacienteStatus.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString());
+        nome = tabelaBuscaStatus.getValueAt(linha_selecionada, 0).toString();
+        DetalhesConsultaPaciente.txtNomeMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 1).toString());
+        DetalhesConsultaPaciente.cbTipoConuslta.setSelectedItem(tabelaBuscaStatus.getValueAt(linha_selecionada, 3).toString());
+        DetalhesConsultaPaciente.lbIdConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 4).toString());
+        DetalhesConsultaPaciente.codMedicoConsulta.setText(tabelaBuscaStatus.getValueAt(linha_selecionada, 5).toString());
+        try {
+            con = ConectaBanco.conecta("bdclinica");
+            String sql = "select p.nome,c.idconsulta, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta from"
+                    + " paciente p , consulta c "
+                    + "where c.paciente_cod=p.cod "
+                    + "and tipo_consulta<>'alta' "
+                    + "and p.nome LIKE ?";
+            pst = con.prepareStatement(sql);
+            pst.setString(1, DetalhesConsultaPaciente.txtNomePacienteStatus.getText() + "%");
+
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                AreaSintomasStatus.setText(rs.getString("c.sintomas"));
+                DetalhesConsultaPaciente.lbTipoConsulta.setText(rs.getString("c.tipo_consulta"));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
+        }
+    }//GEN-LAST:event_tabelaBuscaStatusMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarPacientes;
     private javax.swing.JButton btnDetalhePacientes;
     private javax.swing.JButton btnFecharJanela;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabelaBuscaStatus;

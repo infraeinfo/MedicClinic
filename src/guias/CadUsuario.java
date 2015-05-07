@@ -34,12 +34,11 @@ public class CadUsuario extends javax.swing.JInternalFrame {
 
     public void CadastrarUsuario() {
         if (txtSenha.getText().equals(txtSenha2.getText())) {
-            Connection con;
             try {
                 con = null;
                 con = ConectaBanco.conecta("bdclinica");
                 String query = "INSERT INTO login (nome,telefone,cpf,usuario,senha,tipo) values (?,?,?,?,?,?)";
-                PreparedStatement pst = con.prepareStatement(query);
+                pst = con.prepareStatement(query);
                 pst.setString(1, txtNome.getText());
                 pst.setString(2, txtTelefone.getText().trim());
                 pst.setString(3, txtCPF.getText());
@@ -74,7 +73,6 @@ public class CadUsuario extends javax.swing.JInternalFrame {
     }
 
     public void log() throws SQLException {
-        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Cadastrou Novo Usuario',current_timestamp,?)";
@@ -83,8 +81,6 @@ public class CadUsuario extends javax.swing.JInternalFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -333,12 +329,11 @@ public class CadUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public void verificaUsurio() throws HeadlessException {
-        Connection con;
         try {
             con = null;
             con = ConectaBanco.conecta("bdclinica");
             String query = "SELECT * FROM login WHERE usuario = ?";
-            PreparedStatement pst = con.prepareStatement(query);
+            pst = con.prepareStatement(query);
             pst.setString(1, txtUsuario.getText());
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {

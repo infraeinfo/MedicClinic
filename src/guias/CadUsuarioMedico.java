@@ -25,7 +25,8 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
     Connection con;
     PreparedStatement pst;
-    
+    ResultSet rs;
+
     /**
      * Creates new form CadUsuario
      */
@@ -38,23 +39,20 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
     public void CadastrarUsuarioMedico() {
         if (txtSenha.getText().equals(txtSenha2.getText())) {
-            Connection con;
             try {
-//        con=null;    
                 con = ConectaBanco.conecta("bdclinica");
                 String query = "INSERT INTO login (nome,telefone,cpf,usuario,senha,tipo) values (?,?,?,?,?,?)";
-                PreparedStatement pst = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                pst = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 pst.setString(1, txtNome.getText());
                 pst.setString(2, txtTelefone.getText().trim());
                 pst.setString(3, txtCrm.getText());
                 pst.setString(4, txtUsuario.getText().trim());
                 pst.setString(5, txtSenha.getText());
                 pst.setString(6, cbSetor.getSelectedItem().toString());
-//        pst.setString(6,grupo.getSelection().getActionCommand());  
 
                 pst.execute();
                 //Metodo para recuperar o id de AutoIncremento de PK_PKF
-                ResultSet rs = pst.getGeneratedKeys();
+                rs = pst.getGeneratedKeys();
                 rs.next();
                 //Metodo para Setar o campo recuperado em algum lugar da aplicação
                 String cod = rs.getString(1);
@@ -88,7 +86,6 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     }
 
     public void log() throws SQLException {
-        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Cadastrou usuario Medico',current_timestamp,?)";
@@ -97,8 +94,6 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -114,7 +109,7 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnFecharCadUsuariMedico = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -126,9 +121,7 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         cbSetor = new javax.swing.JComboBox();
         txtSenha = new javax.swing.JPasswordField();
         txtSenha2 = new javax.swing.JPasswordField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnSalvarUsuarioMedicos = new javax.swing.JButton();
         lbAlerta = new javax.swing.JLabel();
         txtNome = new javax.swing.JLabel();
         txtTelefone = new javax.swing.JLabel();
@@ -159,10 +152,10 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnFecharCadUsuariMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
+        btnFecharCadUsuariMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnFecharCadUsuariMedicoActionPerformed(evt);
             }
         });
 
@@ -200,21 +193,10 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         txtSenha2.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         txtSenha2.setForeground(new java.awt.Color(0, 0, 204));
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
-        jButton2.setEnabled(false);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvarUsuarioMedicos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
+        btnSalvarUsuarioMedicos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
-        jButton3.setEnabled(false);
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnSalvarUsuarioMedicosActionPerformed(evt);
             }
         });
 
@@ -238,13 +220,10 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(216, 216, 216)
+                .addComponent(btnSalvarUsuarioMedicos, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnFecharCadUsuariMedico)
                 .addGap(0, 12, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -287,7 +266,7 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtSenha, txtSenha2, txtUsuario});
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnFecharCadUsuariMedico, btnSalvarUsuarioMedicos});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,22 +299,20 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
                         .addComponent(jLabel7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, 18)
+                        .addGap(6, 6, 18)
                         .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, 18)
+                        .addGap(6, 6, 18)
                         .addComponent(txtSenha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnFecharCadUsuariMedico)
+                    .addComponent(btnSalvarUsuarioMedicos))
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnFecharCadUsuariMedico, btnSalvarUsuarioMedicos});
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtCrm, txtNome, txtTelefone});
 
@@ -359,16 +336,15 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnFecharCadUsuariMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharCadUsuariMedicoActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnFecharCadUsuariMedicoActionPerformed
 
     private void txtUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUsuarioFocusLost
         verificaUsurio();
     }//GEN-LAST:event_txtUsuarioFocusLost
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+    private void btnSalvarUsuarioMedicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarUsuarioMedicosActionPerformed
         try {
             CadastrarUsuarioMedico();
             log();
@@ -376,11 +352,7 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
             Logger.getLogger(CadUsuarioMedico.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        limpar();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnSalvarUsuarioMedicosActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
 //        Connection con;
@@ -404,14 +376,12 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formInternalFrameOpened
 
     public void verificaUsurio() throws HeadlessException {
-        Connection con;
         try {
-//            con=null;
             con = ConectaBanco.conecta("bdclinica");
             String query = "SELECT * FROM login WHERE usuario = ?";
-            PreparedStatement pst = con.prepareStatement(query);
+            pst = con.prepareStatement(query);
             pst.setString(1, txtUsuario.getText());
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             if (rs.next()) {
                 lbAlerta.setText("Login indisponível! Escolha outro.");
                 lbAlerta.setForeground(Color.red);
@@ -433,11 +403,9 @@ public class CadUsuarioMedico extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFecharCadUsuariMedico;
+    private javax.swing.JButton btnSalvarUsuarioMedicos;
     private javax.swing.JComboBox cbSetor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

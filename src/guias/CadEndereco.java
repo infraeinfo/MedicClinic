@@ -25,7 +25,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
 
     Connection con;
     PreparedStatement pst;
-    Statement stmt;
+    ResultSet rs;
 
     /**
      * Creates new form CadEndereco
@@ -33,7 +33,6 @@ public class CadEndereco extends javax.swing.JInternalFrame {
      */
     public CadEndereco() {
         initComponents();
-
     }
 
     public static String codEnd;
@@ -54,7 +53,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
 
             pst.execute();
             //Metodo para recuperar o id de AutoIncremento de PK_PKF
-            ResultSet rs = pst.getGeneratedKeys();
+            rs = pst.getGeneratedKeys();
             rs.next();
             //Metodo para Setar o campo recuperado em algum lugar da aplicação
             String cod = rs.getString(1);
@@ -62,11 +61,8 @@ public class CadEndereco extends javax.swing.JInternalFrame {
             //Metodo criado para trbalhar com troca de dados entre forms
             CadPacientes.codEndereco = txtCodEnde.getText();
             CadPacientes.txtCodEndereco.setText(txtCodEnde.getText());
-
             pst.close();
-
             JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Logradouro de Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -93,40 +89,33 @@ public class CadEndereco extends javax.swing.JInternalFrame {
     }
 
     public void BuscaCep() throws SQLException {
-        Connection con;
-        try {
-            con = ConectaBanco.conecta("bdclinica");
-//        String sql = "select * from logradouro Where cep='" +txtBuscaCep+ "'";
-            String sql = "select * from logradouro Where cep LIKE ?";
-            try (PreparedStatement pst = con.prepareStatement(sql)) {
-                pst.setString(1, txtBuscaCep.getText());
-                ResultSet rs = pst.executeQuery();
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "select * from logradouro Where cep LIKE ?";
+        try (PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setString(1, txtBuscaCep.getText());
+            rs = pst.executeQuery();
 
-                if (rs.next())//Se encontrou algun registro prossegue
-                {
-                    txtBuscaCep.setText(rs.getString("cep"));
-                    txtEndereco.setText(rs.getString("endereco"));
+            if (rs.next())//Se encontrou algun registro prossegue
+            {
+                txtBuscaCep.setText(rs.getString("cep"));
+                txtEndereco.setText(rs.getString("endereco"));
+                txtNumero.requestFocus();
+                txtBairro.setText(rs.getString("bairro"));
+                txtCidade.setText(rs.getString("cidade"));
+                cbUf.setSelectedItem(rs.getString("uf"));
+            } else {
+                int op = JOptionPane.showConfirmDialog(null, "CEP Não Cadastrado! Deseja cadastrar um novo CEP?");
+                if (op == JOptionPane.YES_OPTION) {
                     txtNumero.requestFocus();
-                    txtBairro.setText(rs.getString("bairro"));
-                    txtCidade.setText(rs.getString("cidade"));
-                    cbUf.setSelectedItem(rs.getString("uf"));
-                } else {
-                    int op = JOptionPane.showConfirmDialog(null, "CEP Não Cadastrado! Deseja cadastrar um novo CEP?");
-                    if (op == JOptionPane.YES_OPTION) {
-                        txtNumero.requestFocus();                        
-                        LimparCampos2();
-                    }
+                    LimparCampos2();
                 }
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
-
     }
-    
-        public void log() throws SQLException {
-//        String CadtroPaciente;
+
+    public void log() throws SQLException {
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Cadastrou Novo Endereco',current_timestamp,?)";
@@ -135,8 +124,6 @@ public class CadEndereco extends javax.swing.JInternalFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -152,8 +139,8 @@ public class CadEndereco extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
+        btnLimpar = new javax.swing.JButton();
         bntSalvarLogradouro = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -180,17 +167,17 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153), new java.awt.Color(0, 153, 153)));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411838523_icon-close-round-16.png"))); // NOI18N
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnFecharActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411783486_icon-loop-16.png"))); // NOI18N
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLimparActionPerformed(evt);
             }
         });
 
@@ -311,9 +298,9 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                         .addGap(132, 132, 132)
                         .addComponent(bntSalvarLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btnLimpar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(btnFechar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
@@ -322,7 +309,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bntSalvarLogradouro, jButton1, jButton2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bntSalvarLogradouro, btnFechar, btnLimpar});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,8 +344,8 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2))
+                        .addComponent(btnFechar)
+                        .addComponent(btnLimpar))
                     .addComponent(bntSalvarLogradouro, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -383,9 +370,9 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnFecharActionPerformed
 
     private void bntSalvarLogradouroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSalvarLogradouroActionPerformed
         try {
@@ -405,9 +392,9 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodEndeActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         LimparCampos();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
@@ -429,9 +416,9 @@ public class CadEndereco extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntSalvarLogradouro;
+    private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnLimpar;
     private javax.swing.JComboBox cbUf;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

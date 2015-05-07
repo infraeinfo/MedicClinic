@@ -32,6 +32,7 @@ public class Autenticacao extends javax.swing.JFrame {
 
     Connection con;
     PreparedStatement pst;
+    ResultSet rs;
 
     /**
      * Creates new form Autenticacao
@@ -283,11 +284,10 @@ public class Autenticacao extends javax.swing.JFrame {
 
     private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
         con = null;
-       
         try {
-             Logar();
+            Logar();
             log();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Autenticacao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -300,7 +300,6 @@ public class Autenticacao extends javax.swing.JFrame {
     private void txtSenhaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyReleased
         if (evt.getKeyChar() == KeyEvent.VK_ENTER) //se pressionou a tecla enter
         {
-            
             try {
                 Logar();
                 log();
@@ -330,7 +329,6 @@ public class Autenticacao extends javax.swing.JFrame {
     }
 
     public void log() throws SQLException {
-        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Entrou no Sistema',current_timestamp,?)";
@@ -339,8 +337,6 @@ public class Autenticacao extends javax.swing.JFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -351,10 +347,10 @@ public class Autenticacao extends javax.swing.JFrame {
             con = ConectaBanco.conecta("bdclinica");
             String query = "SELECT * FROM login WHERE usuario=? AND senha=?";
 
-            PreparedStatement pst = con.prepareStatement(query);
+            pst = con.prepareStatement(query);
             pst.setString(1, txtUsuario.getText());
             pst.setString(2, txtSenha.getText());
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
 
             if (rs.next())//se encontrou algum registro
             {
@@ -366,13 +362,7 @@ public class Autenticacao extends javax.swing.JFrame {
                 Principal.lbTipoFuncao.setText(rs.getString("tipo"));
                 if (Principal.lbTipoFuncao.getText().equals("Medico")) {
                     PermisaoMedicos();
-//                    funcoes.funcao.laudo_medico();
-//                    centraliza(laudo_medico);
-//                    Principal.btnLaudosMedicos.setVisible(true);
-//                    Principal.btnCadPacientes.setVisible(false);
-//                    Principal.btnMedico.setVisible(false);
-//                    Principal.btnConsulta.setVisible(false);
-//                    Principal.jMenuCadastros.setEnabled(false);
+//              
                 } else {
                     Principal.btnLaudosMedicos.setVisible(false);
                     Principal.JmenuLaudos.setVisible(false);
