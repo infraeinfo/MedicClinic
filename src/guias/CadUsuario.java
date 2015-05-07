@@ -77,7 +77,7 @@ public class CadUsuario extends javax.swing.JInternalFrame {
         String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
-                + "values ('Cadastrou Usuario',current_timestamp,?)";
+                + "values ('Cadastrou Novo Usuario',current_timestamp,?)";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, Principal.lbCod.getText());

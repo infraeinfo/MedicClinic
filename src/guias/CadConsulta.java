@@ -9,6 +9,7 @@ import conexão.ConectaBanco;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,11 +28,21 @@ public class CadConsulta extends javax.swing.JInternalFrame {
      */
     public CadConsulta() {
         initComponents();
+        data_atual();
     }
     public static String codConsulta;
     public static String nomePaciente;
 
+    public void data_atual() //coloca a data do sistema no componente de data        
+    {
+        java.util.Date d = new java.util.Date();
+        d.getTime();
+        dataConsulta.setDate(d);
+    }//fim data_atual
+
     public void cadastrarConsulta() throws SQLException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFormatada = simpleDateFormat.format(CadConsulta.dataConsulta.getDate());
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into consulta (medico_cod,paciente_cod,login_cod,data_consulta,horario,tipo_consulta,sintomas)"
                 + "values (?,?,?,?,?,?,?)";
@@ -40,7 +51,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
             pst.setString(1, codMedicoConsulta.getText());
             pst.setString(2, codPacienteConuslta.getText());
             pst.setString(3, lbCodOperador.getText());
-            pst.setString(4, dataConsulta.getDate().toString());
+            pst.setString(4, dataFormatada);
             pst.setString(5, txtHoraAtendimento.getText());//getSelectedItem().toString());
             pst.setString(6, cbTipoConuslta.getSelectedItem().toString());
             pst.setString(7, AreaSintomas.getText());
@@ -64,12 +75,12 @@ public class CadConsulta extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
     }
-    
-        public void log() throws SQLException {
-         String CadtroPaciente;
+
+    public void log() throws SQLException {
+        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
-                + "values ('cadastro de Consultas',current_timestamp,?)";
+                + "values ('Cadastrou Consultas',current_timestamp,?)";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, Principal.lbCod.getText());
@@ -82,7 +93,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         }
     }
 
-    public void LimparCampos(){
+    public void LimparCampos() {
         txtNomePacienteConsulta.setText("");
         txtNomeMedicoConsulta.setText("");
         txtHoraAtendimento.setText("");
@@ -91,7 +102,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         cbTipoConuslta.setSelectedIndex(0);
         txtNomePacienteConsulta.requestFocus();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -117,7 +128,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         AreaSintomas = new javax.swing.JTextArea();
         dataConsulta = new com.toedter.calendar.JDateChooser();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -130,8 +140,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         lbCodOperador = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         lbData = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        lbHora = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -200,13 +208,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,13 +260,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         lbData.setForeground(new java.awt.Color(255, 51, 102));
         lbData.setText("Data Local");
 
-        jLabel13.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel13.setText("Horario:");
-
-        lbHora.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
-        lbHora.setForeground(new java.awt.Color(255, 51, 102));
-        lbHora.setText("Hora Local");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -283,10 +277,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbData)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbHora)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -299,9 +289,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                     .addComponent(jLabel9)
                     .addComponent(lbCodOperador)
                     .addComponent(jLabel11)
-                    .addComponent(lbData)
-                    .addComponent(jLabel13)
-                    .addComponent(lbHora))
+                    .addComponent(lbData))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -332,10 +320,8 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 250, Short.MAX_VALUE)
+                                .addGap(0, 346, Short.MAX_VALUE)
                                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -362,7 +348,7 @@ public class CadConsulta extends javax.swing.JInternalFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton4});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,13 +387,12 @@ public class CadConsulta extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jButton3)
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2, jButton4});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -475,26 +460,20 @@ public class CadConsulta extends javax.swing.JInternalFrame {
         LimparCampos();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaSintomas;
     private javax.swing.JComboBox cbTipoConuslta;
     public static javax.swing.JLabel codMedicoConsulta;
     public static javax.swing.JLabel codPacienteConuslta;
-    private com.toedter.calendar.JDateChooser dataConsulta;
+    public static com.toedter.calendar.JDateChooser dataConsulta;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -507,7 +486,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JLabel lbCodOperador;
     public static javax.swing.JLabel lbData;
-    public static javax.swing.JLabel lbHora;
     public static javax.swing.JLabel lbNomeOperador;
     private javax.swing.JTextField txtHoraAtendimento;
     public static javax.swing.JTextField txtNomeMedicoConsulta;

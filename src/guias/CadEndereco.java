@@ -113,7 +113,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                 } else {
                     int op = JOptionPane.showConfirmDialog(null, "CEP Não Cadastrado! Deseja cadastrar um novo CEP?");
                     if (op == JOptionPane.YES_OPTION) {
-                        txtNumero.requestFocus();
+                        txtNumero.requestFocus();                        
                         LimparCampos2();
                     }
                 }
@@ -123,6 +123,23 @@ public class CadEndereco extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
 
+    }
+    
+        public void log() throws SQLException {
+//        String CadtroPaciente;
+        con = ConectaBanco.conecta("bdclinica");
+        String sql = "Insert into log (acao,data,login_cod)"
+                + "values ('Cadastrou Novo Endereco',current_timestamp,?)";
+        try {
+            pst = con.prepareStatement(sql);
+            pst.setString(1, Principal.lbCod.getText());
+            pst.execute();
+            pst.close();
+//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException error) {
+            JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
+        }
     }
 
     /**
@@ -137,7 +154,6 @@ public class CadEndereco extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         bntSalvarLogradouro = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -177,8 +193,6 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
 
         bntSalvarLogradouro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
         bntSalvarLogradouro.addActionListener(new java.awt.event.ActionListener() {
@@ -294,12 +308,11 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
                         .addComponent(bntSalvarLogradouro, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -309,7 +322,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bntSalvarLogradouro, jButton1, jButton2, jButton3});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bntSalvarLogradouro, jButton1, jButton2});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,9 +359,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton1)
                         .addComponent(jButton2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(bntSalvarLogradouro)
-                        .addComponent(jButton3)))
+                    .addComponent(bntSalvarLogradouro, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -379,6 +390,7 @@ public class CadEndereco extends javax.swing.JInternalFrame {
     private void bntSalvarLogradouroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntSalvarLogradouroActionPerformed
         try {
             cadastrarLogradouro();
+            log();
             LimparCampos();
 
         } catch (SQLException ex) {
@@ -420,7 +432,6 @@ public class CadEndereco extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox cbUf;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

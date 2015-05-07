@@ -71,7 +71,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
         String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
-                + "values ('Cadastrou Medico',current_timestamp,?)";
+                + "values ('Cadastrou Novo Medico',current_timestamp,?)";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, Principal.lbCod.getText());
@@ -110,7 +110,6 @@ public class CadMedicos extends javax.swing.JInternalFrame {
         txtCRM = new javax.swing.JTextField();
         cbAtendimentoMedico = new javax.swing.JComboBox();
         btnLimparCadMedico = new javax.swing.JButton();
-        btnEditaCadMedico = new javax.swing.JButton();
         btnSalvarCadMedico = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         CodLogin = new javax.swing.JLabel();
@@ -187,8 +186,6 @@ public class CadMedicos extends javax.swing.JInternalFrame {
             }
         });
 
-        btnEditaCadMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411839738_icon-compose-16.png"))); // NOI18N
-
         btnSalvarCadMedico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/1411837995_icon-checkmark-16.png"))); // NOI18N
         btnSalvarCadMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -241,10 +238,9 @@ public class CadMedicos extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbAtendimentoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(120, 120, 120)
                                 .addComponent(btnSalvarCadMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnEditaCadMedico)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnLimparCadMedico)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnFecharCadMedico))
@@ -265,7 +261,7 @@ public class CadMedicos extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnEditaCadMedico, btnFecharCadMedico, btnLimparCadMedico, btnSalvarCadMedico});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnFecharCadMedico, btnLimparCadMedico, btnSalvarCadMedico});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,10 +299,10 @@ public class CadMedicos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7)
                     .addComponent(cbAtendimentoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFecharCadMedico)
-                    .addComponent(btnLimparCadMedico)
-                    .addComponent(btnEditaCadMedico)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnFecharCadMedico)
+                        .addComponent(btnLimparCadMedico))
                     .addComponent(btnSalvarCadMedico))
                 .addContainerGap())
         );
@@ -365,7 +361,6 @@ public class CadMedicos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel CodLogin;
-    private javax.swing.JButton btnEditaCadMedico;
     private javax.swing.JButton btnFecharCadMedico;
     private javax.swing.JButton btnLimparCadMedico;
     private javax.swing.JButton btnSalvarCadMedico;

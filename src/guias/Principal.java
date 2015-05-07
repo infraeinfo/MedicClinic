@@ -43,7 +43,7 @@ public class Principal extends javax.swing.JFrame {
         String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
-                + "values ('Saindo do Sistema',current_timestamp,?)";
+                + "values ('LogOFF',current_timestamp,?)";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, Principal.lbCod.getText());
@@ -510,7 +510,6 @@ public class Principal extends javax.swing.JFrame {
         CadConsulta.lbNomeOperador.setText(Principal.lbOperador.getText());
         CadConsulta.lbCodOperador.setText(cod);
         CadConsulta.lbData.setText(lbData.getText());
-        CadConsulta.lbHora.setText(lbHora.getText());
     }//GEN-LAST:event_btnConsultaActionPerformed
 
     private void btnCadPacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadPacientesActionPerformed
@@ -571,7 +570,6 @@ public class Principal extends javax.swing.JFrame {
         CadConsulta.lbNomeOperador.setText(Principal.lbOperador.getText());
         CadConsulta.lbCodOperador.setText(cod);
         CadConsulta.lbData.setText(lbData.getText());
-        CadConsulta.lbHora.setText(lbHora.getText());
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -592,10 +590,16 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
-        Autenticacao logOff = new Autenticacao();
-        logOff.setVisible(true);
-        logOff.show();
-        
+        try {
+            log();
+            Autenticacao logOff = new Autenticacao();
+            logOff.setVisible(true);
+            logOff.show();
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void DataHora() {

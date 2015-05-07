@@ -118,10 +118,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="cbAtendimentoMedico" alignment="0" min="-2" pref="188" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
                                   <Component id="btnSalvarCadMedico" linkSize="1" min="-2" pref="90" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnEditaCadMedico" linkSize="1" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnLimparCadMedico" linkSize="1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnFecharCadMedico" linkSize="1" min="-2" max="-2" attributes="0"/>
@@ -195,11 +194,12 @@
                       <Component id="cbAtendimentoMedico" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnFecharCadMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnLimparCadMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnEditaCadMedico" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnSalvarCadMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnFecharCadMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnLimparCadMedico" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="btnSalvarCadMedico" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -366,13 +366,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLimparCadMedicoActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnEditaCadMedico">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/icones/1411839738_icon-compose-16.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnSalvarCadMedico">
           <Properties>

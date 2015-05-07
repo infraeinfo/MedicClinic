@@ -225,7 +225,7 @@ public class LogsSistema extends javax.swing.JInternalFrame {
             con = ConectaBanco.conecta("bdclinica");
 //            String sql = "select * from log Where especialidade LIKE ?";
 //            String sql = "select u.nome ,l.acao,l.data from login u, log l where l.login_cod=u.cod";
-            String sql ="select u.nome,l.data,l.acao from login u, log l where l.login_cod=u.cod";
+            String sql ="select u.nome,l.data,l.acao from login u, log l where l.login_cod=u.cod order by u.nome";
             PreparedStatement pst = con.prepareStatement(sql);
 //            pst.setString(1, txtBuscaMedico.getText() + "%");
             

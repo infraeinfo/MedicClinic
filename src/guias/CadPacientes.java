@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -29,7 +30,6 @@ public class CadPacientes extends javax.swing.JInternalFrame {
      */
     public CadPacientes() {
         initComponents();
-
     }
 
     public static String codEndereco;
@@ -109,6 +109,8 @@ public class CadPacientes extends javax.swing.JInternalFrame {
 
     //Insert no banco
     public void cadastrarPacientes() throws SQLException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFormatada = simpleDateFormat.format(this.dataNasci.getDate());
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into paciente (nome,rg,cpf,telefone,celular,data_nasc,estado_civil,tipo_sangue,altura,peso,logradouro_cod)"
                 + "values (?,?,?,?,?,?,?,?,?,?,?)";
@@ -119,7 +121,7 @@ public class CadPacientes extends javax.swing.JInternalFrame {
             pst.setString(3, txtCpf.getText());
             pst.setString(4, txtTelefone.getText());
             pst.setString(5, txtCelular.getText());
-            pst.setString(6, dataNasci.getDate().toString());
+            pst.setString(6, dataFormatada);
             pst.setString(7, cbEstadoCivil.getSelectedItem().toString());
             pst.setString(8, cbTipoSangue.getSelectedItem().toString());
             pst.setString(9, txtAltura.getText());
@@ -135,9 +137,8 @@ public class CadPacientes extends javax.swing.JInternalFrame {
         }
     }
 
-    
-     public void log() throws SQLException {
-         String CadtroPaciente;
+    public void log() throws SQLException {
+        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('cadastro de Pacientes',current_timestamp,?)";
@@ -152,8 +153,7 @@ public class CadPacientes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
     }
-    
-    
+
     public void LimparCampos() {
         txtNome.setText("");
         txtCpf.setText("");
