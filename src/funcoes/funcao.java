@@ -42,6 +42,7 @@ public class funcao {
     public static JInternalFrame cad_usario_medico;
     public static JInternalFrame detalhesBuscaPaciente;
     public static JFrame info_laudos;
+    public static JFrame cad_contatosPaciente;
 
     //Abre o sistema na Tela Principal depois de Clicado no botão acessar
     public static void telaPrincipal() {
@@ -224,6 +225,15 @@ public class funcao {
         }
     }//busca_medico
 
+//        public static void cadContatoPaciente() {
+//        if (cad_contatosPaciente == null || cad_contatosPaciente.isVisible() == false) {
+//            cad_contatosPaciente = new guias.CadTelefonePacienteContato(this, true);
+//            cad_contatosPaciente.setVisible(true);
+//        } else {
+//            cad_contatosPaciente.toFront();
+//        }
+//    }//telaPrincipal
+    
     //metodo para centralizar o JinternalFrame
     public static void centraliza(JInternalFrame janela) {
         // centraliza no JDesktopPane  

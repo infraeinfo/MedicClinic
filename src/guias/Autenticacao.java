@@ -169,7 +169,7 @@ public class Autenticacao extends javax.swing.JFrame {
         jLabel8.setText("V.Sistma");
 
         jLabel9.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel9.setText("PROTOTIPO");
+        jLabel9.setText("V1.00.3a");
 
         jLabel10.setFont(new java.awt.Font("Dialog", 1, 11)); // NOI18N
         jLabel10.setText("Empresa:");

@@ -20,7 +20,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class InfoAultas extends javax.swing.JFrame {
 
+    PreparedStatement pst;
     Connection con;
+    ResultSet rs;
 //    PreparedStatement pst;
 
     /**
@@ -122,11 +124,11 @@ public class InfoAultas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Paciente", "Data da Conuslta", "Tipo Consulta", "sintomas"
+                "Paciente", "Data da Conuslta", "Tipo Consulta", "Medico", "sintomas"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -143,9 +145,9 @@ public class InfoAultas extends javax.swing.JFrame {
             tabHistoricoAltas.getColumnModel().getColumn(0).setPreferredWidth(10);
             tabHistoricoAltas.getColumnModel().getColumn(1).setPreferredWidth(2);
             tabHistoricoAltas.getColumnModel().getColumn(2).setPreferredWidth(2);
-            tabHistoricoAltas.getColumnModel().getColumn(3).setMinWidth(0);
-            tabHistoricoAltas.getColumnModel().getColumn(3).setPreferredWidth(0);
-            tabHistoricoAltas.getColumnModel().getColumn(3).setMaxWidth(0);
+            tabHistoricoAltas.getColumnModel().getColumn(4).setMinWidth(0);
+            tabHistoricoAltas.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tabHistoricoAltas.getColumnModel().getColumn(4).setMaxWidth(0);
         }
 
         jScrollPane2.setBackground(new java.awt.Color(204, 255, 255));
@@ -220,33 +222,32 @@ public class InfoAultas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
         dtm.setRowCount(0);
-        Connection con;
         try {
             con = ConectaBanco.conecta("bdclinica");
-            String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome,c.idconsulta "
+            String sql = "select p.nome,c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome,c.idconsulta "
                     + "from paciente p , consulta c, medico m "
                     + "where  c.medico_cod = m.cod "
+                    + "and c.medico_cod = m.cod "
                     + "and c.paciente_cod = p.cod "
                     + "and tipo_consulta='alta'"
                     + "and p.nome like ? ";
-            PreparedStatement pst = con.prepareStatement(sql);
+            pst = con.prepareStatement(sql);
             pst.setString(1, txtBuscaNomePacienteAlta.getText() + "%");
 
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             while (rs.next()) {
                 Object Linha[] = {
                     rs.getString("p.Nome"),
                     rs.getString("c.data_consulta"), //false, false};
                     rs.getString("c.tipo_consulta"),
+                    rs.getString("m.nome"),
                     rs.getString("c.sintomas"), false, false};
                 dtm.addRow(Linha);
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro :" + e.getMessage());
         }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -265,13 +266,14 @@ public class InfoAultas extends javax.swing.JFrame {
             String sql = "select p.nome, c.horario,c.tipo_consulta,c.sintomas,c.data_consulta,m.nome,c.idconsulta "
                     + "from paciente p , consulta c, medico m "
                     + "where  c.medico_cod = m.cod "
+                    + "and c.medico_cod = m.cod "
                     + "and c.paciente_cod = p.cod "
                     + "and tipo_consulta='alta'"
                     + "and m.nome like ? ";
-            PreparedStatement pst = con.prepareStatement(sql);
+            pst = con.prepareStatement(sql);
             pst.setString(1, Principal.lbOperador.getText() + "%");
 
-            ResultSet rs = pst.executeQuery();
+            rs = pst.executeQuery();
             while (rs.next()) {
                 Object Linha[] = {//rs.getString("p.Nome"),
                     rs.getString("p.Nome"),

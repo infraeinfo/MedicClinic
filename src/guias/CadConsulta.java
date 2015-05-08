@@ -77,7 +77,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
     }
 
     public void log() throws SQLException {
-        String CadtroPaciente;
         con = ConectaBanco.conecta("bdclinica");
         String sql = "Insert into log (acao,data,login_cod)"
                 + "values ('Cadastrou Consultas',current_timestamp,?)";
@@ -86,8 +85,6 @@ public class CadConsulta extends javax.swing.JInternalFrame {
             pst.setString(1, Principal.lbCod.getText());
             pst.execute();
             pst.close();
-//            JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso!", "Cadastrar Pacientes", JOptionPane.INFORMATION_MESSAGE);
-
         } catch (SQLException error) {
             JOptionPane.showMessageDialog(null, "Descrição do Erro! " + error.getMessage());
         }
@@ -429,18 +426,14 @@ public class CadConsulta extends javax.swing.JInternalFrame {
     private void cbTipoConusltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoConusltaActionPerformed
         switch (cbTipoConuslta.getSelectedIndex()) {
             case 0:
-//                JOptionPane.showMessageDialog(null, "Case 0");
                 break;
             case 1:
-//                JOptionPane.showMessageDialog(null, "Case 1");
                 AreaSintomas.setText("4 - Grave\nConstantes vômitos,\nDores no corpo,\nManchas vermelhas na parte inferior do braço e febre alta.\n" + "");
                 break;
             case 2:
-//                JOptionPane.showMessageDialog(null, "Case 2");
                 AreaSintomas.setText("5 - Padrão\nDores na garganta,\nFebre alta,\nFraqueza quando caminha." + "");
                 break;
             case 3:
-//                JOptionPane.showMessageDialog(null, "Case 3");
                 AreaSintomas.setText("6 - Urgente\nDores no coração,\nManchas avermelhadas no braço direito,\nFalta de ar e aparenta pressão alta." + "");
                 break;
         }
